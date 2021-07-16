@@ -45,7 +45,7 @@ The ID for anime is specified as follow:
 The ID for manga/light novel is specified as follow:
 
 * If the manga/light novel has an MAL entry, the ID is the same ID as the MAL ID, but with the prefix L.
-* Otherwise, the ID will be specified using a custom ID system (which can only contains digits) with the prefix L+
+* Otherwise, the ID will be specified using a custom ID system (which can only contains digits) with the prefix LP
 
 ### 3. Visual Novel ID
 
@@ -148,7 +148,7 @@ To calculate a waifu score of an entry, you need a rather complicated formula, w
 The formula is defined as follow:
 
 ```mathematica
-RawWaifuScore = -10 + 20 / (1 + exp(InfluentialTimeInDays / MaxInfluentialTimeInDays * 6))
+RawWaifuScore = -10 + 20 / (1 + exp(-InfluentialTimeInDays / MaxInfluentialTimeInDays * 6))
 
 (* MaxInfluentialTimeInDays used to be the longest influential time of all waifus, but now it's hardcoded to 180 days to make implementing NRS a bit more easier. *)
 ```
@@ -157,7 +157,7 @@ The formula is basically a logistic function. It's to balance everything out and
 
 ### Legacy/Future/Reputation score (intended for NRS1.1)
 
-A lot of anime with high score has a bad legacy/reputation. Meanwhile, there are a lot of underrated animes with good legacy/reputation. A "reputation" of an entry is defined to be the feeling of me for it in a relatively long time after watching/reading/etc. it.
+A lot of anime with high score has a bad legacy/reputation, most notably Love Live Nijigaku. Meanwhile, there are a lot of underrated animes with good legacy/reputation. A "reputation" of an entry is defined to be the feeling of me for it in a relatively long time after watching/reading/etc. it.
 
 Its weight is not specified (WIP), but it will be ranged from 0.01 to 0.05 due to the lack of standard and a rule. Its range is 0-10.
 
