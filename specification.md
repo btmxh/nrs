@@ -143,12 +143,14 @@ In order to be a NRS waifu, a character has to be a "best girl" of at least one 
 
 Previously, it's defined that the character with the longest influential time is going to be the official waifu. But after Hatsune Miku took the reign, this will not be a thing anymore. Also, this event make waifu score obsolete, and in NRS version 1.1, waifu score will be removed from NRS (or merge into meme score).
 
-To calculate a waifu score of an entry, you need a rather complicated formula. And there are two factors: the influential time of your waifu, and the longest-influential waifu in all entry.
+To calculate a waifu score of an entry, you need a rather complicated formula, which depends on how long the waifu is influential.
 
 The formula is defined as follow:
 
 ```mathematica
 RawWaifuScore = -10 + 20 / (1 + exp(InfluentialTimeInDays / MaxInfluentialTimeInDays * 6))
+
+(* MaxInfluentialTimeInDays used to be the longest influential time of all waifus, but now it's hardcoded to 180 days to make implementing NRS a bit more easier. *)
 ```
 
 The formula is basically a logistic function. It's to balance everything out and make the waifu score balanced.
