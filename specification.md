@@ -37,7 +37,7 @@ NRS-ID should be short and informative, so it has a limit of 24 characters.
 The ID for anime is specified as follow:
 
 * If the anime has an MyAnimeList (MAL, [website](myanimelist.net)) entry, the ID is the same anime ID as the MAL ID. (For example: Idoly Pride's MyAnimeList website is https://myanimelist.net/anime/40842/Idoly_Pride, so the MAL ID is 40842, therefore the NRS-ID is 40842). There is no prefixes for MAL animes, due to backward compability.
-* Otherwise, fallback anime websites like AniList(AL, [website](anilist.co)), AniDB(ADB, [website](anidb.net)), Kitsu(KS, [website](kitsu.io)) ID is taken (priority order: AniList, AniDB, Kitsu) with their prefixes. (For example: The above anime, Idoly Pride, has the AniList website: https://anilist.co/anime/113814/IDOLY-PRIDE, so its ID should be AL113814 if its MAL page got taken down (which is nearly impossible))
+* Otherwise, fallback anime websites like AniList(AL, [website](anilist.co)), or AniDB(ADB, [website](anidb.net)) ID is taken (priority order: AniList, AniDB) with their prefixes. (For example: The above anime, Idoly Pride, has the AniList website: https://anilist.co/anime/113814/IDOLY-PRIDE, so its ID should be AL113814 if its MAL page got taken down (which is nearly impossible))
 * If there is no entry for this anime on MAL, AL, ADB or KS, its ID will be specified using a custom ID system with the prefix A. The suffix ID must only contains only digits. (A1, A023 are accepted, but AL123 is not)
 
 ### 2. Manga/Light Novel ID
@@ -155,7 +155,7 @@ RawWaifuScore = -10 + 20 / (1 + exp(-InfluentialTimeInDays / MaxInfluentialTimeI
 
 The formula is basically a logistic function. It's to balance everything out and make the waifu score balanced.
 
-### Legacy/Future/Reputation score (intended for NRS1.1)
+### Legacy/Future/Reputation score (intended)
 
 A lot of anime with high score has a bad legacy/reputation, most notably Love Live Nijigaku. Meanwhile, there are a lot of underrated animes with good legacy/reputation. A "reputation" of an entry is defined to be the feeling of me for it in a relatively long time after watching/reading/etc. it.
 
