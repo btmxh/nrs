@@ -18,5 +18,4 @@ Changes compared to NRS 1.0:
 * Max influential time is removed from waifu scores, and is replaced by the hardcoded value of 180 days (6 months), which is to make implementing NRS a bit easier.
 * Fixed waifu score formula in specification
 * Changed prefix of non-MAL light novel/manga from "L+" to "LP" (the plus sign is not allowed in IDs)
-* Removed Kitsu as a source for fallback anime ID, since it doesn't have numerical IDs (see issue #8)
 * Reputation/Legacy score not intended for NRS 1.1 anymore (NRS will go straight for 2.0, see issue #5)
