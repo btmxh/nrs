@@ -22,4 +22,11 @@ Changes compared to NRS 1.0:
 
 ## NRS 2.0
 
+This is a major release of NRS. The changes are primarily to introduce an emotion score rework.
 
+Release Date: Unknown
+
+Changes compared to NRS 1.0.1:
+
+* Reworked emotion scoring
+* Removed waifu score (now exist in the form of Love Score in Emotion Score)

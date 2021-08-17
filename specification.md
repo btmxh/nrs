@@ -104,15 +104,83 @@ A subscore is calculated using its weight, which is constant for all NRS entries
 
 Emotion score is an important part of an entry (weight: 0.85), and it depends on two factors: peak momentary emotion score and the PADS length.
 
-The peak momentary emotion score is specified by a standard (the NRS-PMES standard).
-
-PADS is an abbreviation for Post Anime Depression Syndrome. The meaning of that word is also expanded a lot. In the official PADS specs, PADS is a state of mind when negative emotion (sadness, loneliness, etc. but not hate or anger) appear because of an NRS-entry.
-
-The formula for raw emotion score is calculated as follow:
+From version 2.0, emotion score is calculated as the weighted sum of all base emotion scores. The base emotion scores are calculated by combining all of the representative score for that base emotion (for example, Sana's backstory and Madokami's MGS scores are Magireco's representative scores for the base emotion sad/depression) using the following function with w = 0.2
 
 ```mathematica
-RawEmotionScore = PeakMomentaryEmotionScore * 0.75 + min(5, PADSLengthInDays) * 0.5
+Combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_(1..n) is x_(1..n) in descending order.
 ```
+
+Example:
+Let's assume Magireco only:
+* made me cry because of Sana's backstory and Madokami's MGS
+* have a good community
+
+Sana's backstory score: 6 + min(6, 1.2 * 0) * 2/3 = 6 (no PADS)  
+Madokami's MGS score: 6 + min(6, 1.2 * inf) * 2/3 = 10 (PADS length unknown, but longer than 5)  
+Good community score: 10  
+
+The sad/depression score: 10 + 6 * 0.2 = 11.2  
+The total raw emotion score: 11.2 * 0.7 + 10 * 0.01 = 7.94
+The emotion score: 7.94 * 0.85 = 6.749
+
+#### 1. Sad/Depression Score (weight = 0.7)
+
+> Small Note: Sad is negative emotion with a target (a character from the entry). Depressions have no targets, or you can say the target is myself. There's little need to separate the two though.
+
+The standard to calculate representative scores is NRS-SD.
+
+PADS is an abbreviation for Post Anime Depression Syndrome. The meaning of that word is also expanded a lot. In the official PADS specs, PADS is a state of mind when negative emotion (sadness, loneliness, etc. but not hate or anger) appear because of an NRS-entry. PADS can also happen because of other emotions (see NRS-JH and NRS-CH standards)
+
+#### 2. Journey-Hype Score (weight = 0.5)
+
+When an anime is able to take you on an adventure, you become one with the group (that took on that adventure), and therefore, feel the same feeling that they did. These emotions usually consist of faith and happiness.
+
+The standard to calculate representative scores is NRS-JH.
+
+#### 3. Comfy/Heartwarming Score (weight = 0.3)
+
+When the interaction of a group of characters with each other is wholesome, the atmosphere of the anime become more comfy/heartwarming, therefore giving me the feeling of comfort.
+
+The standard to calculate representative scores is NRS-CH.
+
+#### 4. Love Score (weight = 0.2)
+
+When I love something (a character or something) in an entry, which isn't music (since music score is a thing) or waifu (until waifu score is removed), and if that love is strong enough, it'll be taken into account.
+
+The intensity of love is measured using the influential time of the target with this formula:
+
+```mathematica
+(* same formula as the old waifu score *)
+RepresentativeLoveScore = -10 + 20 / (1 + exp(-InfluentialTimeInDays / 30))
+```
+
+#### 5. Humor Score (weight = 0.2)
+
+> TODO
+
+#### 6. Thriller Score (weight = 0.4)
+
+> TODO
+
+#### 7. Educational Score (weight = 0.1)
+
+The standard to calculate representative scores is NRS-ED.
+
+#### 8. Horror Score (weight = 0.05)
+
+The standard to calculate representative scores is NRS-HR.
+
+#### 9. Community Score (weight = 0.05)
+
+The positivity of an entry's fandom can also affect the emotion score, since it has a great effect on how I feel of that entry (e.g. Love Live NijiGaku and Magia Record).
+
+The standard for this is NRS-CM.
+
+#### 10. Boringness Score (weight = 0.3)
+
+A completed anime will get more score than an on-hold completed one, and an on-hold completed one will get more than a dropped anime.
+
+The standard to score is NRS-BR.
 
 ### Meme Score
 
@@ -133,28 +201,6 @@ MemeCompensationScore = 0.1 * RawMemeScoreOfTheAnimeKilledThisAnimeMeme
 
 Music score has no standards or rules, range 0-10, has a weight of 0.05.
 
-### Waifu Score
-
-Waifu is a minor factor of an anime, so it only has a weight of 0.05.
-
-NRS defined a waifu as "a character from a NRS-entry which was/is influential in a period of time". This is an expansion of the original definition for waifu, since all NRS waifus (till now) are seasonal waifus.
-
-In order to be a NRS waifu, a character has to be a "best girl" of at least one entry (which is the most influential character in the entry). The next requirement is to be influential. There is a not-well-defined threshold of how influential for someone to be a NRS waifu.
-
-Previously, it's defined that the character with the longest influential time is going to be the official waifu. But after Hatsune Miku took the reign, this will not be a thing anymore. Also, this event make waifu score obsolete, and in NRS version 1.1, waifu score will be removed from NRS (or merge into meme score).
-
-To calculate a waifu score of an entry, you need a rather complicated formula, which depends on how long the waifu is influential.
-
-The formula is defined as follow:
-
-```mathematica
-RawWaifuScore = -10 + 20 / (1 + exp(-InfluentialTimeInDays / MaxInfluentialTimeInDays * 6))
-
-(* MaxInfluentialTimeInDays used to be the longest influential time of all waifus, but now it's hardcoded to 180 days to make implementing NRS a bit more easier. *)
-```
-
-The formula is basically a logistic function. It's to balance everything out and make the waifu score balanced.
-
 ### Legacy/Future/Reputation score (intended)
 
 A lot of anime with high score has a bad legacy/reputation, most notably Love Live Nijigaku. Meanwhile, there are a lot of underrated animes with good legacy/reputation. A "reputation" of an entry is defined to be the feeling of me for it in a relatively long time after watching/reading/etc. it.
@@ -167,22 +213,60 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 
 ## Standards
 
-### Peak Momentary Emotion Standard
+### Sad/Depression Standard (NRS-SD)
 
-|                  Impact                   | Score |
-| :---------------------------------------: | :---: |
-|                Was dropped                |   3   |
-|                Was on-hold                |   4   |
-|   Completed without major interruption    |   5   |
-| Was hyped for new episode (seasonal only) |   6   |
-|       Has a minor emotional impact        |  6.5  |
-|                Good comedy                |   7   |
-|        Heartwarming (CGDCT/Idols)         |  7.5  |
-|          Shocking plot (Action)           |   8   |
-|       Has an major emotional impact       |   8   |
-|            Good drama/romance             |  8.5  |
-|               Almost cried                |   9   |
-|                   Tears                   |  10   |
+|         Impact         |                    Score                    |
+| :--------------------: | :-----------------------------------------: |
+|  Noticable Negativity  |                      2                      |
+|     PADS occurred      |      min(6, 1.2 * number of PADS days)      |
+| Appreciable Negativity |                      6                      |
+|         Cried          | 6 + min(6, 1.2 * number of PADS days) * 2/3 |
+
+### Journey-Hype Standard (NRS-JH)
+
+|     Impact     |                        Score                        |
+| :------------: | :-------------------------------------------------: |
+| Noticable Hype |                          2                          |
+| PADS occurred  |       min(6, 1.2 * number of PADS days) * 7/5       |
+|     Cried      | (6 + min(6, 1.2 * number of PADS days) * 2/3) * 7/5 |
+> multiply with 7/5 to balance with PADS/cry score for sad/depression
+
+### Comfy/Heartwarming Standard (NRS-CH)
+
+|       Impact        |                        Score                        |
+| :-----------------: | :-------------------------------------------------: |
+| Noticable Comfyness |                          2                          |
+|    PADS occurred    |       min(6, 1.2 * number of PADS days) * 7/3       |
+|        Cried        | (6 + min(6, 1.2 * number of PADS days) * 2/3) * 7/3 |
+> multiply with 7/3 to balance with PADS/cry score for sad/depression
+
+### Horror Standard (NRS-HR)
+|         Impact          | Score |
+| :---------------------: | :---: |
+|  Successful jumpscare   |   6   |
+| Cause a sleepless night |  10   |
+
+### Educational Standard (NRS-ED)
+|              Impact               | Score |
+| :-------------------------------: | :---: |
+| Make me interested in known field |   8   |
+| Make me interested in a new field |  10   |
+
+### Boringness Standard (NRS-BR)
+
+|  Status   | Score |
+| :-------: | :---: |
+|  Dropped  |   2   |
+|  On-hold  |   6   |
+| Completed |  10   |
+
+### Community Score Standard (NRS-CM)
+
+| Community Impression | Score |
+| :------------------: | :---: |
+|         Bad          |  -5   |
+|       Neutral        |   0   |
+|         Good         |  10   |
 
 ### Meme duration standard
 
