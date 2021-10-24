@@ -182,6 +182,10 @@ A completed anime will get more score than an on-hold completed one, and an on-h
 
 The standard to score is NRS-BR.
 
+#### 11. Special Emotions (weight = 1)
+
+Emotion that was not mentioned above will be scored here. Despite the lack of standard, the weight is 1, therefore special emotion scores have to be scored fairly and carefully.
+
 ### Meme Score
 
 Meme score has a weight of 0.15. It depends on two major factors: the meme strength score and the duration score.

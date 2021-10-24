@@ -26,6 +26,8 @@ Seasonal: ENTRY_SEASONAL
 
 ### 10. Boredom
 
+### 11. Special Emotions
+
 ## Meme Score
 
 ## Music Score
