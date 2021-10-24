@@ -31,3 +31,7 @@ Seasonal: ENTRY_SEASONAL
 ## Meme Score
 
 ## Music Score
+
+## Overall Thoughts
+
+Overall score:
