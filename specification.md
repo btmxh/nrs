@@ -218,8 +218,8 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 |         Impact         |                    Score                    |
 | :--------------------: | :-----------------------------------------: |
 |  Noticable Negativity  |                      2                      |
+| Appreciable Negativity |                     4-6                     |
 |     PADS occurred      |      min(6, 1.2 * number of PADS days)      |
-| Appreciable Negativity |                      6                      |
 |         Cried          | 6 + min(6, 1.2 * number of PADS days) * 2/3 |
 
 ### Journey-Hype Standard (NRS-JH)
