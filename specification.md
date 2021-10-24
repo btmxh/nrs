@@ -239,7 +239,7 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 
 |       Impact        |                        Score                        |
 | :-----------------: | :-------------------------------------------------: |
-| Noticable Comfyness |                          2                          |
+| Noticable Comfiness |                         1-2                         |
 |    PADS occurred    |       min(6, 1.2 * number of PADS days) * 7/3       |
 |        Cried        | (6 + min(6, 1.2 * number of PADS days) * 2/3) * 7/3 |
 > multiply with 7/3 to balance with PADS/cry score for sad/depression
