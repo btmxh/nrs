@@ -219,29 +219,29 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 
 ### Sad/Depression Standard (NRS-SD)
 
-|         Impact         |                    Score                    |
-| :--------------------: | :-----------------------------------------: |
-|  Noticable Negativity  |                      2                      |
-| Appreciable Negativity |                     4-6                     |
-|     PADS occurred      |      min(6, 1.2 * number of PADS days)      |
-|         Cried          | 6 + min(6, 1.2 * number of PADS days) * 2/3 |
+|         Impact         |                 Score                 |
+| :--------------------: | :-----------------------------------: |
+|  Noticable Negativity  |                  1÷2                  |
+| Appreciable Negativity |                  4÷5                  |
+|     PADS occurred      | 5 + min(4, 0.8 * number of PADS days) |
+|         Cried          | 6 + min(4, 0.8 * number of PADS days) |
 
 ### Journey-Hype Standard (NRS-JH)
 
-|     Impact     |                        Score                        |
-| :------------: | :-------------------------------------------------: |
-| Noticable Hype |                          2                          |
-| PADS occurred  |       min(6, 1.2 * number of PADS days) * 7/5       |
-|     Cried      | (6 + min(6, 1.2 * number of PADS days) * 2/3) * 7/5 |
+|     Impact     |                     Score                     |
+| :------------: | :-------------------------------------------: |
+| Noticable Hype |                      1÷2                      |
+| PADS occurred  | (5 + min(4, 0.8 * number of PADS days)) * 7/5 |
+|     Cried      | (6 + min(4, 0.8 * number of PADS days)) * 7/5 |
 > multiply with 7/5 to balance with PADS/cry score for sad/depression
 
 ### Comfy/Heartwarming Standard (NRS-CH)
 
-|       Impact        |                        Score                        |
-| :-----------------: | :-------------------------------------------------: |
-| Noticable Comfiness |                         1-2                         |
-|    PADS occurred    |       min(6, 1.2 * number of PADS days) * 7/3       |
-|        Cried        | (6 + min(6, 1.2 * number of PADS days) * 2/3) * 7/3 |
+|       Impact        |                     Score                     |
+| :-----------------: | :-------------------------------------------: |
+| Noticable Comfiness |                      1÷2                      |
+|    PADS occurred    | (5 + min(4, 0.8 * number of PADS days)) * 7/3 |
+|        Cried        | (6 + min(4, 0.8 * number of PADS days)) * 7/3 |
 > multiply with 7/3 to balance with PADS/cry score for sad/depression
 
 ### Horror Standard (NRS-HR)
