@@ -251,18 +251,20 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 | Cause a sleepless night |  10   |
 
 ### Educational Standard (NRS-ED)
-|              Impact               | Score |
-| :-------------------------------: | :---: |
-| Make me interested in known field |   8   |
-| Make me interested in a new field |  10   |
+|                 Impact                  | Score |
+| :-------------------------------------: | :---: |
+| Inspire a political discovery/invention |   7   |
+|    Make me interested in known field    |   8   |
+|    Make me interested in a new field    |  10   |
 
 ### Boringness Standard (NRS-BR)
 
-|  Status   | Score |
-| :-------: | :---: |
-|  Dropped  |   2   |
-|  On-hold  |   6   |
-| Completed |  10   |
+|    Status    | Score |
+| :----------: | :---: |
+|   Dropped    |   2   |
+|   On-hold    |   6   |
+| Kinda boring |  6-8  |
+|  Completed   |  10   |
 
 ### Community Score Standard (NRS-CM)
 
