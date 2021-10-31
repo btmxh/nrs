@@ -265,6 +265,8 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 |   On-hold    |   6   |
 | Kinda boring |  6-8  |
 |  Completed   |  10   |
+|    Other     |   5   |
+> "Other" status is for stuff that can't be completed (Music, No-end video game entries, etc.)
 
 ### Community Score Standard (NRS-CM)
 
