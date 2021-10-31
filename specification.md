@@ -276,7 +276,7 @@ Additional scores are scores that are specific for an entry. It doesn't have a s
 |       Neutral        |   0   |
 |         Good         |  10   |
 
-### Meme duration standard
+### Meme Duration Standard (NRS-ME)
 
 |           Duration            | Score |
 | :---------------------------: | :---: |
