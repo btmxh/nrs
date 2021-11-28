@@ -55,6 +55,32 @@ The ID for visual novel (VN) is basically the same as Manga/Light Novel, but wit
 * The prefix for a visual novel ID is V instead of L
 * If an entry doesn't have a vndb entry, it's not considered as an visual novel entry, but rather a game entry.
 
+### 4. Franchise ID
+
+Finally, we are able to combine different entries.
+
+Yes, it's doable with the current stage of NRS. Since everything is scored based on impacts, and we have a combine function, combining all of the impacts from different entries should do the trick.  
+This is why franchises (basically combined entries, idc about multimedia stuff) must have an indexing system.
+
+The prefix is F. After that, it's the ID from the first published subentry of the franchise (a franchise entry is the combined entry of its subentries).
+
+If there are multiple franchises with the same "first published subentry", there will be a postfix: -1, -2, -3, etc.
+
+Example:
+
+MagiReco: The franchise comprises of multiple NRS entries:
+
+* G1 - Magia Record: Mahou Shoujo Madoka★Magica Gaiden (the game)
+* 38256 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV)
+* 41530 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV) 2nd Season - Kakusei Zenya (ss2)
+* 49291 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV) Final Season - Asaki Yume no Akatsuki (ss3)
+
+But the game is published first (idk the date tho), so the entry ID is FG1.
+
+Oregairu: The "franchise" comprises of multiple NRS entries (the three anime seasons), but there's no NRS entry for the LN. Therefore its ID is still based on the anime entries (F14813)
+
+Note: The game is not always what's published first (Lapis Re:LiGHTs and Idoly Pride), so be careful.
+
 #### ID for routes
 
 Although visual novel routes are not separate from each other (each route contribute to the same NRS entry), there is a ID system for VN routes. The current system only supports VN with routes gotten by narrative choices only, and there are at most 5 choices for every question/situation.
@@ -133,13 +159,13 @@ PADS is an abbreviation for Post Anime Depression Syndrome. The meaning of that 
 
 #### 2. Journey-Hype Score (weight = 0.5)
 
-When an anime is able to take you on an adventure, you become one with the group (that took on that adventure), and therefore, feel the same feeling that they did. These emotions usually consist of faith and happiness.
+When an entry is able to take you on an adventure, you become one with the group (that took on that adventure), and therefore, feel the same feeling that they did. These emotions usually consist of faith and happiness.
 
 The standard to calculate representative scores is NRS-JH.
 
 #### 3. Comfy/Heartwarming Score (weight = 0.3)
 
-When the interaction of a group of characters with each other is wholesome, the atmosphere of the anime become more comfy/heartwarming, therefore giving me the feeling of comfort.
+When the interaction of a group of characters with each other is wholesome, the atmosphere of the entry become more comfy/heartwarming, therefore giving me the feeling of comfort.
 
 The standard to calculate representative scores is NRS-CH.
 
@@ -178,7 +204,7 @@ The standard for this is NRS-CM.
 
 #### 10. Boringness Score (weight = 0.3)
 
-A completed anime will get more score than an on-hold completed one, and an on-hold completed one will get more than a dropped anime.
+A completed entry will get more score than an on-hold completed one, and an on-hold completed one will get more than a dropped entry.
 
 The standard to score is NRS-BR.
 
@@ -192,13 +218,15 @@ Meme score has a weight of 0.15. It depends on two major factors: the meme stren
 
 Since meme strength score doesn't have a standard and a rule, it has a pretty low weight (0.1) (also, its range is 0-10), This makes the duration vital in meme scores.
 
-There is also a score named meme compensation score. If an anime's meme is killed by another anime, the compensation score will be that another anime's raw meme score, multiplied by 0.1. Otherwise, it's just left as 0.
+There is also a score named meme compensation score. If an entry's meme is killed by another entry, the compensation score will be that another entry's raw meme score, multiplied by 0.1. Otherwise, it's just left as 0.
+
+In the current beta, an entry can be killed by multiple entries. The values are simply added (aka combine() with factor = 1)
 
 Meme score formulas:
 
 ```mathematica
 RawMemeScore = MemeStrengthScore * 0.1 + MemeDurationScore * 0.9 + MemeCompensationScore
-MemeCompensationScore = 0.1 * RawMemeScoreOfTheAnimeKilledThisAnimeMeme
+MemeCompensationScore = 0.1 * RawMemeScoreOfTheEntryKilledThisEntryMeme
 ```
 
 ### Music Score
