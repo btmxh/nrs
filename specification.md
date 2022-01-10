@@ -102,7 +102,7 @@ Video Game, Franchise, Music:
 combine_unsigned([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_(1..n) is x_(1..n) in descending order.
 
 // signed combine function
-combine(arr, w) = combine(arr_positive, w) - combine(arr_negative_abs, w),
+combine(arr, w) = combine_unsigned(arr_positive, w) - combine_unsigned(arr_negative_abs, w),
 where arr_positive is arr but without all negative values,
 arr_negative_abs is arr without all positive values, but taking the absolute values
 ```
