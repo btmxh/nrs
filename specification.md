@@ -97,7 +97,14 @@ Video Game, Franchise, Music:
 
 ```
 // the combine function, will be used a lot in NRS
-combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_(1..n) is x_(1..n) in descending order.
+
+// unsigned combine function
+combine_unsigned([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_(1..n) is x_(1..n) in descending order.
+
+// signed combine function
+combine(arr, w) = combine(arr_positive, w) - combine(arr_negative_abs, w),
+where arr_positive is arr but without all negative values,
+arr_negative_abs is arr without all positive values, but taking the absolute values
 ```
 
 ### Score Hierarchy
