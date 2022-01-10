@@ -24,6 +24,8 @@ After the "Autism Movement" and some drawbacks found after implementing NRS on a
 
 NRS has no versions when it was first launched, and this still held when it was hosted on Google Sheets. This migration has led to the first official version of NRS, version 1.0, which is what the original NRS hosted on Google Sheets is like.  
 
+NRS 2.0 is then published to fix all of the problems in NRS 1.0
+
 ## NRS-ID
 
 The NRS-ID is a case-insensitive string of alphanumeric characters (from 0-9 and A-Z) and the dash symbol (-) to separate different parts of the ID, which is unique for every NRS entry.
@@ -32,289 +34,274 @@ It's the only thing guaranteed to be different among entries, since a lot of man
 
 NRS-ID should be short and informative, so it has a limit of 24 characters.
 
-### 1. Anime ID
+From NRS 2.0, the (full) ID is in the following format:
 
-The ID for anime is specified as follow:
+```
+NRS_ID = TypePrefix + "-" + DatabaseID + ("-" + SubtypePrefix) + "-" + EntryIDInDatabase + ("-" + OptionalSuffix)
+// when OptionalSuffix is omitted, it's
+NRS_ID = TypePrefix + "-" + DatabaseID + "-" + EntryIDInDatabase
+// when there are no databases containing the entry, we use a custom ID system (or base on other entries).
+// the custom ID needs to be digit-only
+NRS_ID = TypePrefix + "-" + CustomID
+```
 
-* If the anime has an MyAnimeList (MAL, [website](myanimelist.net)) entry, the ID is the same anime ID as the MAL ID. (For example: Idoly Pride's MyAnimeList website is https://myanimelist.net/anime/40842/Idoly_Pride, so the MAL ID is 40842, therefore the NRS-ID is 40842). There is no prefixes for MAL animes, due to backward compability.
-* Otherwise, fallback anime websites like AniList(AL, [website](anilist.co)), AniDB(ADB, [website](anidb.net)), Kitsu(KS, [website](kitsu.io)) ID is taken (priority order: AniList, AniDB, Kitsu) with their prefixes. (For example: The above anime, Idoly Pride, has the AniList website: https://anilist.co/anime/113814/IDOLY-PRIDE, so its ID should be AL113814 if its MAL page got taken down (which is nearly impossible))
-* If there is no entry for this anime on MAL, AL, ADB or KS, its ID will be specified using a custom ID system with the prefix A. The suffix ID must only contains only digits. (A1, A023 are accepted, but AL123 is not)
+This has made NRS IDs more clear and easy to read. Take A-MAL-23847 for example, it's an anime entry (A), with ID 23847 taken from MyAnimeList (MAL).
 
-### 2. Manga/Light Novel ID
+### Type Prefixes
 
-The ID for manga/light novel is specified as follow:
+* A: Anime
+* L: Light Novel/Manga
+* V: Visual Novel
+* G: Video Game
+* F: Franchise
+* M: Music
 
-* If the manga/light novel has an MAL entry, the ID is the same ID as the MAL ID, but with the prefix L.
-* Otherwise, the ID will be specified using a custom ID system (which can only contains digits) with the prefix LP
+### Databases (and its priority)
 
-### 3. Visual Novel ID
+Anime:
+* MAL: [MyAnimeList](https://myanimelist.net)
+* AL: [AniList](https://anilist.co)
+* ADB: [AniDB](https://anidb.net)
+* KS: [Kitsu](https://kitsu.io)
 
-The ID for visual novel (VN) is basically the same as Manga/Light Novel, but with some differences:
+Visual Novel:
+* VNDB: [vndb](https://vndb.org)
 
-* MAL is replaced by vndb (stands for (the) visual novel database, [website](vndb.org)).
-* The prefix for a visual novel ID is V instead of L
-* If an entry doesn't have a vndb entry, it's not considered as an visual novel entry, but rather a game entry.
+Video Game, Franchise, Music:
+* VGMDB: [vgmdb](https://vgmdb.net)
 
-### 4. Franchise ID
+  VGMDB has two subtype prefixes: AL for album, AR for artists
 
-Finally, we are able to combine different entries.
+### Notes
 
-Yes, it's doable with the current stage of NRS. Since everything is scored based on impacts, and we have a combine function, combining all of the impacts from different entries should do the trick.  
-This is why franchises (basically combined entries, idc about multimedia stuff) must have an indexing system.
+* Visual Novels are defined as entries with a vndb entry, so there are no custom ID system for Visual Novels.
+* Franchises without a vgmdb entry can be named after its first published sub-entry: ```"F" + FirstSubEntryID```. Here are some examples (we assume that the franchise entry doesn't exist):
 
-The prefix is F. After that, it's the ID from the first published subentry of the franchise (a franchise entry is the combined entry of its subentries).
+  MagiReco: The franchise comprises of multiple NRS entries:
 
-If there are multiple franchises with the same "first published subentry", there will be a postfix: -1, -2, -3, etc.
+  * G-VGM-5237 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (the game)
+  * A-MAL-38256 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV)
+  * A-MAL-41530 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV) 2nd Season - Kakusei Zenya (ss2)
+  * A-MAL-49291 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV) Final Season - Asaki Yume no Akatsuki (ss3)
 
-Example:
+  But the game is published first (idk the date tho), so the entry ID is FG-VGM-5237.
 
-MagiReco: The franchise comprises of multiple NRS entries:
+  > Note: The game is not always what's published first (Lapis Re:LiGHTs and Idoly Pride), so be careful.
+* Entries without a vgmdb entry can be named after its franchise (the opposite situation of what happens above): ```TypePrefix + FranchiseID```, optional suffix is often needed.
 
-* G1 - Magia Record: Mahou Shoujo Madoka★Magica Gaiden (the game)
-* 38256 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV)
-* 41530 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV) 2nd Season - Kakusei Zenya (ss2)
-* 49291 - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden (TV) Final Season - Asaki Yume no Akatsuki (ss3)
+  Re:Stage! Prism Step is a game from the Re:Stage! franchise. But on vgmdb there's no game entry, so the game ID is GF-VGM-7059
 
-But the game is published first (idk the date tho), so the entry ID is FG1.
-
-Oregairu: The "franchise" comprises of multiple NRS entries (the three anime seasons), but there's no NRS entry for the LN. Therefore its ID is still based on the anime entries (F14813)
-
-Note: The game is not always what's published first (Lapis Re:LiGHTs and Idoly Pride), so be careful.
-
-#### ID for routes
-
-Although visual novel routes are not separate from each other (each route contribute to the same NRS entry), there is a ID system for VN routes. The current system only supports VN with routes gotten by narrative choices only, and there are at most 5 choices for every question/situation.
-
-In order to get the ID for route, you'll have to do these following steps:
-
-* Record the choice string, which is a string of digits storing the choices indices (starts from 1) in chronological order.
-
-  For example, the first recorded Aokana route is Route 211111..., which can be achieved by selecting the second choice in the first question (Worry about her.), the first choice in the next question (Because I want you to know how to fly.), etc.
-
-* Compress the choice string as an alphanumeric string. Using the following python script:
-
-  ```python
-  def compress_route_string(string):
-      ret = ''
-      for i in range(0, len(string), 2):
-          # for each pair of characters (as a digit)
-          first = int(string[i])
-          second = 0 if i + 1 >= len(string) else int(string[i + 1])
-          if second == 0:
-              # swap `first` and `second` if second is 0 (to make the compressed character make sense)
-              second = first
-              first = second
-          # compress `first` and `second` into an alphanumeric character
-          ret += '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'(first, second)
-      return ret
-  
-  # print the compressed route string for 211111
-  # print(compress_route_string('211111'))
-  ```
-
-### 4. Music/Game ID
-
-Both of these entries will use a custom ID system (which can only contains digits), with prefixes M and G respectively.
-
-Note: A visual novel (must have a vndb entry), which can be considered as a game, is always indexed by the visual novel rule.
+* Music entries are separated songs, therefore they usually need an optional suffix, and it's the track number in the first published album containing the song.
 
 ## Rating System
 
-### Overall score
-
-An entry overall score is calculated as the sum of all its "subscores".
-
-A subscore is calculated using its weight, which is constant for all NRS entries, multiplied with the raw score. 
-
-### Emotion Score
-
-Emotion score is an important part of an entry (weight: 0.85), and it depends on two factors: peak momentary emotion score and the PADS length.
-
-From version 2.0, emotion score is calculated as the weighted sum of all base emotion scores. The base emotion scores are calculated by combining all of the representative score for that base emotion (for example, Sana's backstory and Madokami's MGS scores are Magireco's representative scores for the base emotion sad/depression) using the following function with w = 0.2
-
-```mathematica
-Combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_(1..n) is x_(1..n) in descending order.
+```
+// the combine function, will be used a lot in NRS
+combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_(1..n) is x_(1..n) in descending order.
 ```
 
+### Score Hierarchy
+
+1. NRS Score: total score, with everything taken into account (as far as NRS can handle). It is calculated by taking the sum of all subscores.
+
+2. Subscores:
+
+  * Emotion Subscore (combine_weight = 0.8)
+  * Art Subscore (combine_weight = 0.7)
+  * Boredom Subscore (combine_weight = 1.0)
+  * Fandom Subscore (combine_weight = 1.0)
+  * Information Subscore (combine_weight = 1.0)
+  * Other Score (combine_weight = 1.0)
+
+  Subscore are calculated by combining all factor scores (using combine_weight as weight).
+
+3. Factor scores: Basically subscores of subscores.  
+  a. Emotion factor scores:
+
+  Emotions are group by two properties: Pleasant (Unpleasant or Pleasant) and Active/Calm (Activated, Calm,Moderate).
+
+  Some example emotions:
+
+  * Activated Unpleasant: Hate, Anger, Disgust, etc.
+  * Activated Pleasant: Interest, Amusement, Joy, etc.
+  * Moderate Unpleasant: Fear
+  * Moderate Pleasant: Love, Heartwarming, etc.
+  * Calming Unpleasant: Sad, Depression, Compassion, etc.
+  * Calming Pleasant: Journey/Hype, Supportive, etc.  
+
+  Combine Weight Table:
+  |            | Activated | Moderate | Calm |
+  |------------|-----------|----------|------|
+  | Pleasant   | 0.85      | 0.9      | 0.95 |
+  | Unpleasant | 0.8       | 0.85     | 0.9  |
+  
+  b. Art factor scores:
+
+  * Language (translated stuff is also accounted), combine weight is 0.75
+  * Illustrations (~~how cute are the anime girls~~, yk what i meant, fan arts also accounted), combine weight is 0.5
+  * Music (without lyrics, music entries only), combine weight is 0.95
+
+  c. Information factor scores:
+
+  * Politics (change my view on life or sth), combine weight is 0.85
+  * General Information (make me interested in sth), combine weight is 0.9
+
+  d. Subscore-based factor scores:
+
+  Boredom, Fandom, Other subscores has only one factor score each (with the same name as the subscore). Their combine weight are all 1.0.
+
+  e. Calculation:
+
+  Factor scores are calculated by combined all factor scores awarded from impacts (combine weights noted above.
+
+  ```
+  Impact A gave 5 Art-Language factor score, 8 Art-Music factor score
+  Impact B gave 7 Art-Language factor score, 10 Information-Politics factor score
+
+  Therefore the entry has a total of:
+  combine([5, 7], 0.75) Art-Language factor score
+  combine([8], 0.95) Art-Music factor score
+  combine([10], 0.85) Information-Politics factor score
+  ```
+
+### Relations
+
+Relations are kind of like impacts but towards other entries. Here are some examples:
+* Magia Record (anime) "killed" RizeKoi
+* Lapis Re:LiGHTS made idol anime a thing, so Re:Stage! Dream Days or Love Live! School Idol Project are watched because of it
+
+Note: "contains" is not a relation. If entry A contains entry B, you add all impacts of B to the list of impacts from A. 
+
+Relation score is calculated as follows:
+```
+RelationScore = Entry1.OverallScore * RelationWeight1 + Entry2.OverallScore * RelationWeight2 + ...
+```
+
+When circular relation happens, the behavior is undefined, but every implementation should have its own sane behavior (which can be equations, stack size limit, etc.)
+
+Relation weight are based on two things, the chemistry (for example how an OST fit to a sad scene) and the relation itself (gate-open, revive, etc.)
+
+### Impacts
+
+An impact is somewhat difficult to define, so here are some examples:
+* Your Lie In April made me cried
+* Oregairu is the inspiration of Hikism-Yukism
+* Love Live Niji is what made "Ayumuiro Days" a thing
+
+Impacts are the building blocks of NRS scores. An impact will give factor score values.
+
+### Standardized Impacts
+
+**Emotional Impacts** are the first 4 standardized impacts, only giving score to the emotion group causing them
+
+#### 1. PADS
+
+PADS (Post Anime Depression Syndrome) is the state of mind when some extreme emotions overwhelming other normal emotions because of an entry. PADS can be caused by all of the emotion groups, and it will give factor score to that group.
+
+A PADS is considered when its duration (how long those extreme emotions last) is at least a day.
+
+Since PADS is an extreme emotion, its score is not scaled (doesn't depend on the emotion group).
+
+If PADS is caused by 2 emotion groups, it's considered two PADS, and the duration must be measured separately. (this is rare, since PADSes are often merged into one emotion).
+
+The scaled score formula: ```map(PADSLengthInDays, 1, 5, 1, 4)```
+
+#### 2. Cry
+
+Crying is the most rewarded emotional impact. Similarly to PADSes, crying is considered an extreme (expression of) emotion, therefore its score is not scaled (doesn't depend on the emotion group).
+
+The scaled score is 6.
+
+#### 3. Appreciable Emotional Impact (AEI)
+
+"Appreciable" means something like "High Quality". An AEI is an emotional impact without PADS or tears, but a lot more than barely noticeable (basically almost cried).
+
+This is not applicable to Activated Pleasant and Moderate Unpleasant emotions.
+
 Example:
-Let's assume Magireco only:
-* made me cry because of Sana's backstory and Madokami's MGS
-* have a good community
+* Kokoro Connect's drama: is executed well, but didn't cause any PADS or make me cry.
+* Chuunibyou demo Koi ga Shitai! Ren: Shichimiya dead people almost made me cry.
 
-Sana's backstory score: 6 + min(6, 1.2 * 0) * 2/3 = 6 (no PADS)  
-Madokami's MGS score: 6 + min(6, 1.2 * inf) * 2/3 = 10 (PADS length unknown, but longer than 5)  
-Good community score: 10  
+The unscaled score ranges from 4 to 5 depending on how "appreciable" the impact is.
 
-The sad/depression score: 10 + 6 * 0.2 = 11.2  
-The total raw emotion score: 11.2 * 0.7 + 10 * 0.01 = 7.94
-The emotion score: 7.94 * 0.85 = 6.749
+The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calm Unpleasant and Calm Pleasant is 1.0.
 
-#### 1. Sad/Depression Score (weight = 0.7)
+#### 4. Noticeable Emotion Impact (NEI)
 
-> Small Note: Sad is negative emotion with a target (a character from the entry). Depressions have no targets, or you can say the target is myself. There's little need to separate the two though.
+"Noticeable" means, well, it exists. A NEI is an emotional impact without PADS, tears and being "appreciable". For example, take any well-executed drama from an idol/music anime (bandori, idolmaster, etc.).
 
-The standard to calculate representative scores is NRS-SD.
+This is not applicable to Activated Pleasant and Moderate Unpleasant emotions.
 
-PADS is an abbreviation for Post Anime Depression Syndrome. The meaning of that word is also expanded a lot. In the official PADS specs, PADS is a state of mind when negative emotion (sadness, loneliness, etc. but not hate or anger) appear because of an NRS-entry. PADS can also happen because of other emotions (see NRS-JH and NRS-CH standards)
+The score ranges from 1 to 3, depending on how "noticeable" the impact is.
 
-#### 2. Journey-Hype Score (weight = 0.5)
+The scale for Activated Unpleasant is 0.2, Moderate Pleasant is 0.9, both Calm Unpleasant and Calm Pleasant is 1.0.
 
-When an entry is able to take you on an adventure, you become one with the group (that took on that adventure), and therefore, feel the same feeling that they did. These emotions usually consist of faith and happiness.
+#### 5. Waifu
 
-The standard to calculate representative scores is NRS-JH.
-
-#### 3. Comfy/Heartwarming Score (weight = 0.3)
-
-When the interaction of a group of characters with each other is wholesome, the atmosphere of the entry become more comfy/heartwarming, therefore giving me the feeling of comfort.
-
-The standard to calculate representative scores is NRS-CH.
-
-#### 4. Love Score (weight = 0.2)
-
-When I love something (a character or something) in an entry, which isn't music (since music score is a thing) or waifu (until waifu score is removed), and if that love is strong enough, it'll be taken into account.
+When I love something (a character or something) in an entry, and if that love is strong enough, it'll be taken into account, by giving some moderate pleasant factor.
 
 The intensity of love is measured using the influential time of the target with this formula:
 
-```mathematica
-(* same formula as the old waifu score *)
-RepresentativeLoveScore = -10 + 20 / (1 + exp(-InfluentialTimeInDays / 30))
+```
+// old waifu score formula
+ModeratePleasantFactor = 10 * tanh(InfluentialTimeInDays / 60)
 ```
 
-#### 5. Humor Score (weight = 0.2)
+#### 6. Humor and Plot
 
-> TODO
+When an entry has good comedy or plot, it will be given some Activated Pleasant factor.
 
-#### 6. Thriller Score (weight = 0.4)
+If the humor is mild (average CGDCT), score is in 0.5-1.5 range.  
+If the humor is good, score is in 2-4 range.
 
-> TODO
+If the plot is appreciable, score is in 1-3 range.  
+If the plot is exceptional, score is in 3-5 range.
 
-#### 7. Educational Score (weight = 0.1)
+#### 7. Horror
 
-The standard to calculate representative scores is NRS-ED.
+Activated Unpleasant factor are given to entries with spooky stuff.
 
-#### 8. Horror Score (weight = 0.05)
+Giving me a sleepless night is 4 score, and every jumpscare is 1 score.
 
-The standard to calculate representative scores is NRS-HR.
+#### 8. Information
 
-#### 9. Community Score (weight = 0.05)
+Inspiring political discoveries is 1 politics factor score, while making me interested in a field is 2 (3 if it's a new field) politics factor score.
 
-The positivity of an entry's fandom can also affect the emotion score, since it has a great effect on how I feel of that entry (e.g. Love Live NijiGaku and Magia Record).
+#### 9. Boredom
 
-The standard for this is NRS-CM.
+This impact will give/take boredom factor score.
 
-#### 10. Boringness Score (weight = 0.3)
+Aired/Completed Entries (for gacha game, its completed time is end-of-service)
+* Completed: 1
+* Completed but noticable boredom: 0.5
+* Dropped: -1
+* Unwatched: 0
 
-A completed entry will get more score than an on-hold completed one, and an on-hold completed one will get more than a dropped entry.
+Airing/Continuing Entries:
+* Watching: 0.75
+* Temporarily On-Hold: -0.5
+* Partially Dropped: -0.5 to 0.25
 
-The standard to score is NRS-BR.
+#### 10. Meme
 
-#### 11. Special Emotions (weight = 1)
+If an entry got meta and memed, it will be given some Activated Pleasant score. This score depends on how long and how strong the meme is.
 
-Emotion that was not mentioned above will be scored here. Despite the lack of standard, the weight is 1, therefore special emotion scores have to be scored fairly and carefully.
+Meme score is calculated as follow:
 
-### Meme Score
-
-Meme score has a weight of 0.15. It depends on two major factors: the meme strength score and the duration score.
-
-Since meme strength score doesn't have a standard and a rule, it has a pretty low weight (0.1) (also, its range is 0-10), This makes the duration vital in meme scores.
-
-There is also a score named meme compensation score. If an entry's meme is killed by another entry, the compensation score will be that another entry's raw meme score, multiplied by 0.1. Otherwise, it's just left as 0.
-
-In the current beta, an entry can be killed by multiple entries. The values are simply added (aka combine() with factor = 1)
-
-Meme score formulas:
-
-```mathematica
-RawMemeScore = MemeStrengthScore * 0.1 + MemeDurationScore * 0.9 + MemeCompensationScore
-MemeCompensationScore = 0.1 * RawMemeScoreOfTheEntryKilledThisEntryMeme
 ```
+ActivatedPleasantFactor = MemeStrengthScore * MemeDurationScore * 3
 
-### Music Score
-
-Music score has no standards or rules, range 0-10, has a weight of 0.05.
-
-### Legacy/Future/Reputation score (intended)
-
-A lot of anime with high score has a bad legacy/reputation, most notably Love Live Nijigaku. Meanwhile, there are a lot of underrated animes with good legacy/reputation. A "reputation" of an entry is defined to be the feeling of me for it in a relatively long time after watching/reading/etc. it.
-
-Its weight is not specified (WIP), but it will be ranged from 0.01 to 0.05 due to the lack of standard and a rule. Its range is 0-10.
-
-### Additional Score
-
-Additional scores are scores that are specific for an entry. It doesn't have a standard or a rule, usually range from 0-1. There are some common additional score category like gate opening score or short anime buff.
-
-## Standards
-
-### Sad/Depression Standard (NRS-SD)
-
-|         Impact         |                 Score                 |
-| :--------------------: | :-----------------------------------: |
-|  Noticable Negativity  |                  1÷2                  |
-| Appreciable Negativity |                  4÷5                  |
-|     PADS occurred      | 5 + min(4, 0.8 * number of PADS days) |
-|         Cried          | 6 + min(4, 0.8 * number of PADS days) |
-
-### Journey-Hype Standard (NRS-JH)
-
-|     Impact     |                     Score                     |
-| :------------: | :-------------------------------------------: |
-| Noticable Hype |                      1÷2                      |
-| PADS occurred  | (5 + min(4, 0.8 * number of PADS days)) * 7/5 |
-|     Cried      | (6 + min(4, 0.8 * number of PADS days)) * 7/5 |
-> multiply with 7/5 to balance with PADS/cry score for sad/depression
-
-### Comfy/Heartwarming Standard (NRS-CH)
-
-|       Impact        |                     Score                     |
-| :-----------------: | :-------------------------------------------: |
-| Noticable Comfiness |                      1÷2                      |
-|    PADS occurred    | (5 + min(4, 0.8 * number of PADS days)) * 7/3 |
-|        Cried        | (6 + min(4, 0.8 * number of PADS days)) * 7/3 |
-> multiply with 7/3 to balance with PADS/cry score for sad/depression
-
-### Horror Standard (NRS-HR)
-|         Impact          | Score |
-| :---------------------: | :---: |
-|  Successful jumpscare   |   6   |
-| Cause a sleepless night |  10   |
-
-### Educational Standard (NRS-ED)
-|                 Impact                  | Score |
-| :-------------------------------------: | :---: |
-| Inspire a political discovery/invention |   7   |
-|    Make me interested in known field    |   8   |
-|    Make me interested in a new field    |  10   |
-
-### Boringness Standard (NRS-BR)
-
-|    Status    | Score |
-| :----------: | :---: |
-|   Dropped    |   2   |
-|   On-hold    |   6   |
-| Kinda boring |  6-8  |
-|  Completed   |  10   |
-|    Other     |   5   |
-> "Other" status is for stuff that can't be completed (Music, No-end video game entries, etc.)
-
-### Community Score Standard (NRS-CM)
-
-| Community Impression | Score |
-| :------------------: | :---: |
-|         Bad          |  -5   |
-|       Neutral        |   0   |
-|         Good         |  10   |
-
-### Meme Duration Standard (NRS-ME)
-
+MemeStrengthScore is in the range 0.0 - 1.0
+MemeDurationScore is specified by the duration standard below
+```
 |           Duration            | Score |
-| :---------------------------: | :---: |
+| ----------------------------- | ----- |
 |        Less than a day        |   0   |
-|           1-3 days            |   1   |
-|           4-7 days            |   3   |
-|           1-2 weeks           |   5   |
-|           2-3 weeks           |   6   |
-|       3 weeks - 1 month       |   7   |
-|           1-2 month           |   8   |
-|          2-3 months           |   9   |
-| More than 3 months (a season) |  10   |
-
+|           1-3 days            |  0.1  |
+|           4-7 days            |  0.3  |
+|           1-2 weeks           |  0.5  |
+|           2-3 weeks           |  0.6  |
+|       3 weeks - 1 month       |  0.7  |
+|           1-2 month           |  0.8  |
+|          2-3 months           |  0.9  |
+| More than 3 months (a season) |   1   |
