@@ -102,7 +102,7 @@ combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_
 
 ### Score Hierarchy
 
-1. NRS Score: total score, with everything taken into account (as far as NRS can handle). It is calculated by taking the sum of all subscores.
+1. NRS Score: total score, with everything taken into account (as far as NRS can handle). It is calculated by taking the sum of all subscores, then added with the relation score.
 
 2. Subscores:
 
@@ -118,7 +118,7 @@ combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_
 3. Factor scores: Basically subscores of subscores.  
   a. Emotion factor scores:
 
-  Emotions are group by two properties: Pleasant (Unpleasant or Pleasant) and Active/Calm (Activated, Calm,Moderate).
+  Emotions are group by two properties: Pleasant (Unpleasant or Pleasant) and Active/Calming (Activated, Calming, Moderate).
 
   Some example emotions:
 
@@ -130,10 +130,10 @@ combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_
   * Calming Pleasant: Journey/Hype, Supportive, etc.  
 
   Combine Weight Table:
-  |            | Activated | Moderate | Calm |
-  |------------|-----------|----------|------|
-  | Pleasant   | 0.85      | 0.9      | 0.95 |
-  | Unpleasant | 0.8       | 0.85     | 0.9  |
+  |            | Activated | Moderate | Calming |
+  |------------|-----------|----------|---------|
+  | Pleasant   | 0.85      | 0.9      |   0.95  |
+  | Unpleasant | 0.8       | 0.85     |   0.9   |
   
   b. Art factor scores:
 
@@ -204,7 +204,7 @@ Since PADS is an extreme emotion, its score is not scaled (doesn't depend on the
 
 If PADS is caused by 2 emotion groups, it's considered two PADS, and the duration must be measured separately. (this is rare, since PADSes are often merged into one emotion).
 
-The scaled score formula: ```map(PADSLengthInDays, 1, 5, 1, 4)```
+The scaled score formula: ```map(PADSLengthInDays, 1, 5, 3, 5)```
 
 #### 2. Cry
 
@@ -222,9 +222,9 @@ Example:
 * Kokoro Connect's drama: is executed well, but didn't cause any PADS or make me cry.
 * Chuunibyou demo Koi ga Shitai! Ren: Shichimiya dead people almost made me cry.
 
-The unscaled score ranges from 4 to 5 depending on how "appreciable" the impact is.
+The unscaled score ranges from 2 to 3 depending on how "appreciable" the impact is.
 
-The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calm Unpleasant and Calm Pleasant is 1.0.
+The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calming Unpleasant and Calming Pleasant is 1.0.
 
 #### 4. Noticeable Emotion Impact (NEI)
 
@@ -232,9 +232,9 @@ The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calm U
 
 This is not applicable to Activated Pleasant and Moderate Unpleasant emotions.
 
-The score ranges from 1 to 3, depending on how "noticeable" the impact is.
+The score ranges from 1 to 2, depending on how "noticeable" the impact is.
 
-The scale for Activated Unpleasant is 0.2, Moderate Pleasant is 0.9, both Calm Unpleasant and Calm Pleasant is 1.0.
+The scale for Activated Unpleasant is 0.2, Moderate Pleasant is 0.9, both Calming Unpleasant and Calming Pleasant is 1.0.
 
 #### 5. Waifu
 
@@ -244,14 +244,14 @@ The intensity of love is measured using the influential time of the target with 
 
 ```
 // old waifu score formula
-ModeratePleasantFactor = 10 * tanh(InfluentialTimeInDays / 60)
+ModeratePleasantFactor = 1.5 * tanh(InfluentialTimeInDays / 60)
 ```
 
 #### 6. Humor and Plot
 
 When an entry has good comedy or plot, it will be given some Activated Pleasant factor.
 
-If the humor is mild (average CGDCT), score is in 0.5-1.5 range.  
+If the humor is mild (average CGDCT), score is in 1-2 range.  
 If the humor is good, score is in 2-4 range.
 
 If the plot is appreciable, score is in 1-3 range.  
