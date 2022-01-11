@@ -108,7 +108,7 @@ combine([x_1, x_2, ..., x_n], w) = y_1 + y_2 * w + ... + y_n * w^(n-1), where y_
 
   * Emotion Subscore (combine_weight = 0.8)
   * Art Subscore (combine_weight = 0.7)
-  * Boredom Subscore (combine_weight = 1.0)
+  * Boredom Subscore (combine_weight = 0.0)
   * Fandom Subscore (combine_weight = 1.0)
   * Information Subscore (combine_weight = 1.0)
   * Other Score (combine_weight = 1.0)
