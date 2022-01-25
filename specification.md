@@ -113,11 +113,11 @@ arr_negative_abs is arr without all positive values, but taking the absolute val
 
 2. Subscores:
 
-  * Emotion Subscore (combine_weight = 0.8)
-  * Art Subscore (combine_weight = 0.7)
+  * Emotion Subscore (combine_weight = 0.6)
+  * Art Subscore (combine_weight = 0.4)
   * Boredom Subscore (combine_weight = 0.0)
   * Fandom Subscore (combine_weight = 1.0)
-  * Information Subscore (combine_weight = 1.0)
+  * Information Subscore (combine_weight = 0.5)
   * Other Score (combine_weight = 1.0)
 
   Subscore are calculated by combining all factor scores (using combine_weight as weight).
@@ -139,19 +139,19 @@ arr_negative_abs is arr without all positive values, but taking the absolute val
   Combine Weight Table:
   |            | Activated | Moderate | Calming |
   |------------|-----------|----------|---------|
-  | Pleasant   | 0.85      | 0.9      |   0.95  |
-  | Unpleasant | 0.8       | 0.85     |   0.9   |
+  | Pleasant   | 0.4       | 0.35     |   0.4   |
+  | Unpleasant | 0.3       | 0.35     |   0.5   |
   
   b. Art factor scores:
 
-  * Language (translated stuff is also accounted), combine weight is 0.75
-  * Illustrations (~~how cute are the anime girls~~, yk what i meant, fan arts also accounted), combine weight is 0.5
-  * Music (without lyrics, music entries only), combine weight is 0.95
+  * Language (translated stuff is also accounted), combine weight is 0.3
+  * Illustrations (~~how cute are the anime girls~~, yk what i meant, fan arts also accounted), combine weight is 0.3
+  * Music (without lyrics, music entries only), combine weight is 0.4
 
   c. Information factor scores:
 
-  * Politics (change my view on life or sth), combine weight is 0.85
-  * General Information (make me interested in sth), combine weight is 0.9
+  * Politics (change my view on life or sth), combine weight is 0.7
+  * General Information (make me interested in sth), combine weight is 0.5
 
   d. Subscore-based factor scores:
 
@@ -166,9 +166,9 @@ arr_negative_abs is arr without all positive values, but taking the absolute val
   Impact B gave 7 Art-Language factor score, 10 Information-Politics factor score
 
   Therefore the entry has a total of:
-  combine([5, 7], 0.75) Art-Language factor score
-  combine([8], 0.95) Art-Music factor score
-  combine([10], 0.85) Information-Politics factor score
+  combine([5, 7], 0.3) Art-Language factor score
+  combine([8], 0.4) Art-Music factor score
+  combine([10], 0.7) Information-Politics factor score
   ```
 
 ### Relations
@@ -217,7 +217,7 @@ The scaled score formula: ```map(PADSLengthInDays, 1, 5, 3, 5)```
 
 Crying is the most rewarded emotional impact. Similarly to PADSes, crying is considered an extreme (expression of) emotion, therefore its score is not scaled (doesn't depend on the emotion group).
 
-The scaled score is 6.
+The scaled score is 4.
 
 #### 3. Appreciable Emotional Impact (AEI)
 
@@ -272,7 +272,7 @@ Giving me a sleepless night is 4 score, and every jumpscare is 1 score.
 
 #### 8. Information
 
-Inspiring political discoveries is 1 politics factor score, while making me interested in a field is 2 (3 if it's a new field) politics factor score.
+Inspiring political discoveries is 0.75 politics factor score, while making me interested in a field is 1 (2 if it's a new field) politics factor score.
 
 #### 9. Boredom
 
