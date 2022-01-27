@@ -239,7 +239,7 @@ The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calmin
 
 This is not applicable to Activated Pleasant and Moderate Unpleasant emotions.
 
-The score ranges from 1 to 2, depending on how "noticeable" the impact is.
+The score ranges from 0 to 2, depending on how "noticeable" the impact is.
 
 The scale for Activated Unpleasant is 0.2, Moderate Pleasant is 0.9, both Calming Unpleasant and Calming Pleasant is 1.0.
 
