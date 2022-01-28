@@ -229,7 +229,7 @@ Example:
 
 The unscaled score ranges from 2 to 3 depending on how "appreciable" the impact is.
 
-The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calming Unpleasant and Calming Pleasant is 1.0.
+The scale for Activated Unpleasant is 0.7, both Activated Pleasant and Moderate Unpleasant are 0.8, Moderate Pleasant is 0.9, and both Calming Unpleasant and Calming Pleasant is 1.0.
 
 #### 4. Noticeable Emotion Impact (NEI)
 
@@ -237,7 +237,7 @@ The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calmin
 
 The score ranges from 0 to 2, depending on how "noticeable" the impact is.
 
-The scale for Activated Unpleasant is 0.2, Moderate Pleasant is 0.9, both Calming Unpleasant and Calming Pleasant is 1.0.
+The scale for Activated Unpleasant is 0.6 both Activated Pleasant and Moderate Unpleasant are 0.8, Moderate Pleasant is 0.9, both Calming Unpleasant and Calming Pleasant is 1.0.
 
 #### 5. Waifu
 
