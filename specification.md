@@ -223,8 +223,6 @@ The scaled score is 4.
 
 "Appreciable" means something like "High Quality". An AEI is an emotional impact without PADS or tears, but a lot more than barely noticeable (basically almost cried).
 
-This is not applicable to Activated Pleasant and Moderate Unpleasant emotions.
-
 Example:
 * Kokoro Connect's drama: is executed well, but didn't cause any PADS or make me cry.
 * Chuunibyou demo Koi ga Shitai! Ren: Shichimiya dead people almost made me cry.
@@ -236,8 +234,6 @@ The scale for Activated Unpleasant is 0.3, Moderate Pleasant is 0.9, both Calmin
 #### 4. Noticeable Emotion Impact (NEI)
 
 "Noticeable" means, well, it exists. A NEI is an emotional impact without PADS, tears and being "appreciable". For example, take any well-executed drama from an idol/music anime (bandori, idolmaster, etc.).
-
-This is not applicable to Activated Pleasant and Moderate Unpleasant emotions.
 
 The score ranges from 0 to 2, depending on how "noticeable" the impact is.
 
@@ -254,15 +250,13 @@ The intensity of love is measured using the influential time of the target with 
 ModeratePleasantFactor = 1.5 * tanh(InfluentialTimeInDays / 60)
 ```
 
-#### 6. Humor and Plot
+#### 6. Exceptional Humor and Plot
 
-When an entry has good comedy or plot, it will be given some Activated Pleasant factor.
+When an entry has good comedy or plot, it will be given some Activated Pleasant factor. Normally, this is a NEI/AEI, but when it's exceptional, an EHI or EPI (exceptional humor/plot impact) will be given instead.
 
-If the humor is mild (average CGDCT), score is in 1-2 range.  
-If the humor is good, score is in 2-4 range.
+This can be considered a Cry impact for AP emotions.
 
-If the plot is appreciable, score is in 1-3 range.  
-If the plot is exceptional, score is in 3-5 range.
+An EHI gave 3.5 AP factor score, and EPI can give from 3.5 to 4.5 factor score. (which can be more than a normal Cry impact)
 
 #### 7. Horror
 
