@@ -260,7 +260,7 @@ An EHI gave 3.5 AP factor score, and EPI can give from 3.5 to 4.5 factor score. 
 
 #### 7. Horror
 
-Activated Unpleasant factor are given to entries with spooky stuff.
+Moderate Unpleasant factor are given to entries with spooky stuff.
 
 Giving me a sleepless night is 4 score, and every jumpscare is 1 score.
 
