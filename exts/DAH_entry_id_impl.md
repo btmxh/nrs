@@ -61,7 +61,7 @@ Visual Novel:
 Video Game, Franchise, Music:
 
 - VGMDB: [vgmdb](https://vgmdb.net)
-  
+
   VGMDB has two subtype prefixes: AL for album, AR for artists
 
 ### Notes
@@ -69,4 +69,3 @@ Video Game, Franchise, Music:
 - Visual Novels are defined as entries with a vndb entry, so there are no custom ID system for Visual Novels.
 - Music track entries will use its album ID base ID, and the track number as its suffix, so the ID of `OvertuRe:` will be "M-VGMDB-AL-89363-2" (it's in the album `DRe:AmEr (KiRaRe ver.)`, id "M-VGMDB-AL-89363").
 - For franchises with multiple games, and none of them have a separate VGMDB entries, the games will share the same database ID with the owner franchise, but using the suffix as the index of that game in the game list (start from 1).
-- 
