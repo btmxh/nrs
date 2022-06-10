@@ -92,3 +92,7 @@ Factor scores:
 * IG: 0.5
 * B: 0.0
 * AD: 1.0
+
+## See Also
+
+The ```DAH_overall_score``` extension is used to combined the factor scores into a single number called the overall score.
