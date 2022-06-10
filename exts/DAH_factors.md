@@ -69,7 +69,7 @@ Like the boredom subscore, this subscore has only one factor score with the same
 
 ## Combine factors
 
-If the DAH_overall_score is enabled, the combine factors for all factor scores and subscores are as follows:
+The combine factors for all factor scores and subscores are as follows:
 
 Subscores:
 * E: 0.6
@@ -92,6 +92,8 @@ Factor scores:
 * IG: 0.5
 * B: 0.0
 * AD: 1.0
+
+Putting the factor score combine weights into a vector, we got the combine weight vector: \[0.3, 0.4, 0.35, ...\] (the factor score order must be AU, AP, MU, ...)
 
 ## See Also
 
