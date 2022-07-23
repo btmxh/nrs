@@ -59,9 +59,7 @@ With that in mind, information comes in two forms: politics (IP) and general inf
 
 Boredom is the amount of interest given to the entry. The subscore has only one factor score with the same name.
 
-This factor score is only given to entries that are "completeable", which are anime, manga, light novels, completeable games (like visual novels). Music is excluded because it took literally like only five minutes to complete listening to one normal song. Gacha games will take something like 5 years to "complete", and there is no good indicator of how "completed" the game was. 
-
-TODO: add the standard table
+This factor score is only given to entries that are "completable", which are anime, manga, light novels, completable games (like visual novels). Music is excluded because it took literally like only five minutes to complete listening to one normal song. Gacha games will take something like 5 years to "complete", and there is no good indicator of how "completed" the game was. 
 
 ### 5. Additional (AD)
 

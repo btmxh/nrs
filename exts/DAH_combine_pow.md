@@ -11,7 +11,7 @@ NRS 2.0+
 
 ## Overview
 
-This extension provides the combineUnsigned function using exponentation functions
+This extension provides the combineUnsigned function using exponentiation functions
 
 ## Implementation (python code)
 
