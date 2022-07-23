@@ -2,141 +2,151 @@
 
 Version 2.0
 
-## Overview
+## 1. Overview
 
 NRS is a scoring system (although the name is "New Ranking System"), which tries to be as powerful as possible.
 
 It decides how scores are calculated for **entries**, and this score depends on **impacts** and **relations**.
 
-Personally, my implementation of NRS is used to rank anime, manga and other similar content (not limited to Japan, but still mostly weeb stuff).
+Personally, my implementation of NRS is used to rank anime, manga and other similar content (not limited to Japanese origin, but still mostly weeb stuff).
 
 Since NRS 2.0, the concept of extensions is introduced into NRS. This effectively modularize NRS, and allow NRS to be more flexible for different implementations. The most notable result is that it remove the need of any "Japanese word" from this specification (except for the Overview and History part, and some examples).
 
-## Extensions
+## 2. Fundamental concepts
 
-An extension is something that affect the NRS score calculation process. It must have a unique **name**, i.e. there must not be two extensions with the same name (case-insensitive), and that **name** is a string of ASCII characters, which can be a letter (A-Z, a-z), a digit (0-9), or a underscore symbol (_).
+### 2.1. NRS systems and NRS contexts
 
-The name can be named however you want, but to make the name fits nicely with my list of extension, it should be named the OpenGL format:  `{VENDOR_SHORT_NAME}_{extension_name}`. For example, `DAH_factors`, `DAH_code_generation`, etc. (vendor is basically the person/entity decide how the extension works)
+This set of files, containing the core specification and extensions specification documents are hosted on a [Git](https://git-scm.com/) reposistory. The current official reposistory is hosted on [GitHub](https://github.com), with the reposistory URL being [https://github.com/ngoduyanh/nrs.git](https://github.com/ngoduyanh/nrs.git). This Git reposistory may be referred as "the official NRS reposistory".
 
-The specifications for all (documented) extensions will be in the `exts` directory.
+An NRS system is an entity that is capable of executing certain tasks described by an NRS specification. This is the specification for a *core* NRS system, therefore any *core* NRS system must be an NRS system. By modifying this document using a set of [extensions](2.2. Extensions), which each has its own specification in the `exts` directory of the NRS specification git repository, a modified NRS specification can be derived from this document, then used to create a new NRS system. If the modification change how the system behave, this new system is no longer a *core* NRS system.
 
-An extension can have dependencies, which can be other extensions or requirements of NRS core version.
+An NRS context can be created from an NRS system, which may or may not exist physically. NRS contexts act as an environment for the tasks to be executed. Different contexts from the same system may have different extensions enabled, therefore their processes may be incompatible. A *core* NRS context is created from a *core* NRS system, and since there are no restrictions on extension support for *core* system, *core* contexts also may not be incompatible with each other. After the creation of an NRS context, the set of extension enabled can not be modified.
 
-## Score Vector, Score Matrix, Factor Scores
+> Context incompability is defined to be the inablity to interfere with each other's processes. (i.e. sharing data)
 
-NRS scores are represented using **vectors**, these are called score vectors. Components of that vector are called **factor scores**. Score matrix are used to "scale" these vectors.
+### 2.2. Extensions
 
-The number of dimensions in these vectors are the same throughout the implementation, and it must be the same as the size of the score matrices (the matrices are square btw).
+An extension is a set of modification to this document.
 
-Using the `combine(a, w)` function defined above, score vectors can be combined with the help of a vector called the combine weight vector `CWV`
+All extensions must have a unique **name**. This name must be a string of ASCII characters, which may be an alphanumeric character (A-Z, a-z, 0-9) or the underscore character `'_'`. The use of any other characters is strictly forbiddened. The uniqueness of extension names must be case-insensitive ('Abc' and 'abc' must not be names for different extensions).
 
-```
-combine(vectors)[i] = combine(vectors.map(v => v[i]), CWV[i])
-for all i in the range 0 to NUM_DIMENSIONS - 1
-```
+The entity that specify an extension is called the vendor of that extension, and may have a name used to prefix their extension names using the OpenGL-inspired extension name convention. This naming convention is defined as such: the vendor name and the base extension must be written in [SCREAMING_SNAKE_CASE](https://en.wiktionary.org/wiki/screaming_snake_case) and [snake_case](https://en.wikipedia.org/wiki/Snake_case), respecitively; then joined by the underscore separator character. This helps minimizing extension naming collisions where different vendors implementing the same functionalities with minor differences.
 
-## Entries
+This name is then used to name the specification files of the extension, which is in the `exts` directory of the official NRS reposistory.
 
-An **entry** is something that'll be scored by the system. 
+Extensions may interact with each other. There are two types of interaction defined in this document:
 
-An entry can contains other entries. A number called the **contain weight** is used to determine how "strong" this "relation" is. The contain weight must be a number between 0 and 1 (0 is the same as A not containing B, and 1 means that A completely contains B, all impacts and relations of B are directly added to A)
+* dependence: Some extensions, in order to be enabled, require some other extensions to be enabled.
+* incompatible: Some extensions, in order to be enabled, require some other extensions to be disabled.
 
-(Let CW(A-B) be the contain weight of A on B)
+### 2.3. Mathematical concepts
 
-```
-For example, X and Y formed a band B (two people bands don't exist, but ignore that)
-X is the vocalist of the band, and the main reason why I listened to B.
-Y is the drummer, and only few people cared about them.
+The (score calculation process)[] depends on some basic concepts of linear algebra: vectors, matrices, dot product, matrix multiplication, etc. All of the vectors and matrices used in the process will be simple vectors and matrices (ordered sets of real numbers).
 
-B published a song, S, and it got 10.0 NRS score.
+Score vectors and matrices are simple vectors and matrices with a restriction: in a context, all score vectors must have the same number of dimensions `n`, and all score matrices must be `n x n` square matrices. This number `n` is called the number of factor scores.
 
-Since B completely owns S, it also got all of 100% S's impacts.
-But the same can't be said for X and Y. Both of them only partially owns B.
+Factor scores are fancy indices to access elements of a score vector. The number of factor scores are globally constant in a context, and every factor score can be used to access element of any score vectors.
 
-This is where this "contain weight" comes to play.
-Because X is the main reason of B's success, X will have a higher contain weight than Y.
+An unique function, called **the combine function** must be defined in every context. This function takes in a multiset of number and an additional number, called the combine weight, as input, then gives out a single number as output. Alternatively, passing a simple vector or a score vector to this function in the place of the number multiset will result in the same output as collecting all elements of the vector into a new number multiset, then passing it to the function. In any case, the combine weight is obligatory.
 
-For example, CW(X, B) = 0.75, CW(Y, B) = 0.25
-```
+From this line, the result of calling the function using the number multiset (or vector) `a` and the combine weight `w` will be shortened into `combine(a, w)` using the function call notation.
 
-This "contain" relation has turned NRS entries into a weighted directed graph, and to make thing easier to phrase, graph theory terminology is going to be extensively used in the following part.
+The combine function has several requirements:
 
-Let E be the set of all entries, CW be the contain weight function, G be the entry graph (G's vertex set is E, G's edge set is `{(u, v) for u, v in E; u != v; CW(u,v) > 0}`)
+* `combine(a, 1)` is the sum of all elements in `a`
+* `combine(a, 0)` is the sum of the largest positive value in `a` (or 0 if it doesn't exist) with the smallest negative value in `a` (or 0 if it doesn't exist). In other words, `combine(a, 0) = max(max(a), 0) + min(min(a), 0)`
+* `combine(a, w)` is the sum of `combine(p, w)` and `combine(n, w)`, where `p` and `n` are filtered submultiset of `a` with only *positive* and *negative* values, respectively.
+* `combine(a, w)` is the quotient of `combine(sa, w)` to `s`, where `sa` is the multiset of all element of `a`, scaled by `s`, for every non-zero value of `s`.
 
-These conditions must be satisfied:
+Using the mentioned property, we can achieve `combine(a, w) = combine(p, w) - combine(-n, w)` (using the same notation as the third requirement, `-n` is the multiset of all absolute values of `n`. The right hand side only computes combine with a multiset of real positive numbers, therefore it's sufficient for implementation to define `combine` with the assumption that all elements of `a` is positive. This specialization of `combine` is called the `combineUnsigned` function.
 
-* `CW(X, X) = 1.0` for all X in E
-- `0.0 <= CW(X, Y) <= 1.0` for every pair of (X, Y) in E^2
-* `CW(X, Y) = max { CW(X, E) * CW(E, Y) } for all entries E` for every pair of (X, Y) in E^2
+### 2.4. Context entities
 
-* `CW(X, Y) * CW(Y, X) = 0` for every pair of (X, Y) in E^2, X != Y (equivalent to G has no loop)
+Context entities are entities that belong to an NRS context. These contain: entries, impacts, and relations.
 
-## Impacts
+#### 2.4.1. Entries
 
-An **impact** is something that gives score to entries.
+An **entry** is a context entity that is scored in the [score calculation process](#3.2. Score calculation)
 
-An impact may be caused by multiple entries, and the amount of contribution from each entries is stored using a number called the contribution weight of that entry.
+An entry can contains other entries. For each pair of entry `A` and `B`, there is a number named the **direct contain weight**, that determine how much of `B` was contained directly by `A`. This number must be in the 0 to 1 range.
 
-The amount of score an impact has is called the score of that impact.
+These values are used to determine the **contain weight** of entry pairs. The process is covered in the [contain weight solving](#3.2.2. Contain weight solving) process.
 
-## Relations
+#### 2.4.2. Impacts
 
-An **relation** describes the relationship between entries.
+An **impact** is a context entity that's used to give constant score to entries.
 
-Similarly to impacts, a relation may be caused by multiple entries, and for every contributing entry, there is a contribution weight.
+An impact is defined using two properties:
 
-Relations give score to contributing entries, but this score is not static. It depends on other entries, which are called referenced entries. For every referenced entries, there is  a score matrix (which will be multiplied with the overall score of that entry, summed over all entries, to get the score of the relation).
+* The impact contribution map, mapping entries to a number, called the **direct contributing weight**. This number determines how much of the impact was a result of the entry. This number must be in the 0 to 1 range.
+* The impact score vector, which will be scaled to get the score added for each contributing entry.
 
-## Combine function
+#### 2.4.3 Relations
 
-The combine function is a function that takes two argument:
+A **relation** is a context entity that's used to give score to entries based on scores of other entries. The score added to entries will depend on scores of other entries.
 
-* An array of number, which can be empty
+A relation is defined using two properties:
 
-* A number called weight, which is in the range 0.0
+* The relation referencing map, mapping entries to a score matrix, called the **relation score transform matrix**.
 
-The function must satisfy some conditions:
+* The relation contribution map, mapping entries to a number, called the **direct contributing weight**. Similarly to the weight in impacts, it determines how much of the relation affects the entry. It must be in the 0 to 1 range.
 
-* `combine(a, w) = combine(a+, w) + combine(a-, w)`, where `a+` is `a` without all non-positive values, `a-` is `a` without all non-negative values
+## 3. Required capabilities
 
-* `combine(a, 0.0) = max(max(a), 0.0) + min(min(a), 0.0)`
+An NRS system must be able to carry out two operations: creating contexts and calculating entries' scores.
 
-* `combine(a, 1.0) = sum(a)`
+### 3.1. Creating contexts
 
-It's easy to prove that if `combine(a, w)` satisfies all 3 above conditions, there exists one and only one function `combineUnsigned(a, w)` such that:
+An NRS context must be able to be created from a system. In this context creation process, the set of all enabled extensions will be specified. This extension set is not required to be accessible from the newly created context, but must stay the same in the lifetime of the context. The definition of this lifetime is implementation-defined.
 
-```
-combine(a, w) = combineUnsigned(a+, w) - combineUnsigned(abs(a-), w)
-```
+### 3.2. Score calculation
 
-Therefore, all implementations of NRS will only have to implement `combineUnsigned(a, w)`.
+An NRS context doesn't exactly need to follow along these steps. The only requirements for the calculation process is that the result must match (numeric errors are allowed).
 
-## Calculation
+#### 3.2.1. Combining score vectors
 
-```python
-# not python code, only here for better syntax highlighting
+The function `combineVectors` takes in a multiset of vectors and a combine weight, in the form of a vector, then performs component-wise `combine`-ing to get the output vector.
 
-# The overall score vector is the sum of the impact score vector and the relation score vectorOverallScore = ImpactScore + RelationScore
-OverallScore = ImpactScore + RelationScore
+The combine weight is globally constant, and it's called the **factor score combine weight vector**. It will be defined by the implementation.
 
-# The impact score is the combination of all per-impact score
-# The relation score is the combination of all per-relation score
-ImpactScore = combine(AllImpacts.map(x => PerImpactScore(x)))
-RelationScore = combine(AllRelations.map(x => PerRelationScore(x))
+#### 3.2.2. Contain weight solving
 
-# per-impact score is the product of the raw impact score with the contributing weight
-PerImpactScore(impact) = impact.Score * ContributingWeight(thisEntry, impact)
+Entries in the context and their relationship can be modeled as a weighted directed graph. This graph, called the **entry graph**, is constructed as follows:
 
-# per-relation score is the product of the raw relation score with the contributing weight
-PerRelationScore(relation) = relation.Score * ContributingWeight(thisEntry, relation)
+* The vertex set is the set of all entries.
+* Let `A` and `B` be vertices (entries of the context). The directed edge `(A, B)` is an edge of the entry graph if and only if the **direct contain weight** of the pair `(A, B)` is greater than zero. This weight is also used as the weight for this edge.
 
-# contributing weight is basically the sum of all contain weight from this entry to all contributors
-# BuffWeight(rawWeight) is implementation-defined
-ContributingWeight(impactOrRelation) = BuffWeight(RawContributingWeight(impactOrRelation))
-RawContributingWeight(impactOrRelation) = sum(CW(thisEntry, contributor) * contributorWeight for (contributor, contributorWeight) in entryOrRelation.contributors)
+After establishing the entry graph, the **contain weight** of the pair `(A, B)` can be calculated as follows
 
-# raw relation score is the sum of products between contributor score matrix and its overall score
-relation.Score = sum(contributorMatrix * contributor.OverallScore for (contributor, contributorMatrix) in relation.contributors)
-```
+* If `A` and `B` is the same entry, the result is 1.
+* Otherwise, the result is sum of the contain wights of the pairs in the form `(C, B)`, for every out-neighbor `C` of `A`.
 
-Note: This algorithm may cause infinite recursion (`thisEntry.OverallScore` depends on `contributor.OverallScore`). If this happens, it's undefined behavior (but every implementation should have an approach to fix this problem).
+As long as there are no loops in the entry graph, the process will come to an end. The behavior of this process when there are loops is implementation-specific. The recommended behavior is too forbid the existence of loops in this graph.
+
+#### 3.2.3. Contributing weight solving
+
+Consider the entity `IR` that is either an impact or a relation. Since both impacts and relations have a contribution map, we will let that map for `IR` be `M`.
+
+Using this map and the containing relationship between entries, the contribution weight of an entry `E` to `IR` may be calculated by taking the sum of all products between the contain weight of the pair `(E, A)` and the **direct contributing weight** of `A` in `IR` for every `A` in the map `M`.
+
+This weight is then passed into an function, called the weight-buffing function to get the buffed contributing weight of `E` in `IR`.
+
+#### 3.2.4. Impact score calculation
+
+For an impact `I` and entry `E`, the amount of score that `I` give to `E` is the product of the I's impact score vector and the buffed contributing weight of `E` in `I`.
+
+The total impact score of an entry `E` is then calculated by performing `combineVectors` on the multiset of all score vectors that `I` gives to `E`, for every impact `I`.
+
+#### 3.2.5. Relation score calculation
+
+For a relation `R`, the relation base score is calculated by taking the sum of all matrix products between every referenced entry overall score and its overall score.
+
+Using this base score, for every relation `R` and entry `E`, the score vector that `R` give to `E` is calculated by taking the product of `R`'s base score and the buffed contributing weight of `E` in `R`.
+
+The total relation score of an entry `E` is then calculated by performing `combineVectors` on the multiset of all score vectors that `R` gives to `E`, for every relation `R`.
+
+> Note: This algorithm may cause infinite recursion (relation score of this entry may depend on the overall score of another entries). If this happens, the behavior is implementation-defined.
+
+#### 3.2.5. Overall score calculation
+
+The overall score is simply the sum of the impact score and the relation score of an entry.
