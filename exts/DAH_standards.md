@@ -108,5 +108,4 @@ Since this is a meme impact, it will only give AP emotion score.
 
 ## Additional impact
 
-This is used when an impact doesn't fit the standard but it's still significant. The grader is allowed to rate this impact however they want.
-
+Additional impact is the only kind of impact allowed to give additional subscores. For example, these impacts can be used to buff/nerf entries that was underrated or has been abusing the system.
