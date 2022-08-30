@@ -80,12 +80,6 @@ A waifu is a character that is loved by me from an entry.
 
 There are two kinds of impact for horror (MU emotion), "jumpscare" and "sleepless night". Both of them are self-explanatory, and give a base score of 1.0 and 4.0, respectively.
 
-## Info-based impact (deprecated, use additional impacts instead)
-
-Political impact (something that change how I think and act) gives a base score of 0.75 to the info-politics subscore.
-
-Field-interest impact (something that made me interested into something new) gives a base score of 2.0 (if it's a new field) or 1.0 otherwise
-
 ## Boredom impact
 
 An entry may be *finished* by *consuming* it. Depending on how much of this process has happened, an appropriate boredom impact will be given to the entry. Some entries, despite being able to be *consumed*, will not have a boredom impact given to them (music entries in the nrs-impl-kt for example).
