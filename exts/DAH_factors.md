@@ -11,7 +11,7 @@ NRS 2.0+
 
 ## Overview
 
-Since the core NRS specifications doesn't explicitly define what the factor scores should be, i.e. they're implementation-defined, this extension aims to fill in the gaps.
+Since the core NRS specifications doesn't explicitly define what the factor scores should be, i.e. they're implementation-defined, this extension aims to fill in this gap.
 
 ## Subscores
 
@@ -49,19 +49,13 @@ The factor scores of this subscore are:
 
 The names should be self-explanatory.
 
-### 3. Information (I) (marked for removal)
-
-Information is something (lesson, message) inferred from the NRS entry, but must not be emotion-related or art-related.
-
-With that in mind, information comes in two forms: politics (IP) and general info (IG) (basically literally anything else).
-
-### 4. Boredom (B)
+### 3. Boredom (B)
 
 Boredom is the amount of interest given to the entry. The subscore has only one factor score with the same name.
 
 This factor score is only given to entries that are "completable", which are anime, manga, light novels, completable games (like visual novels). Music is excluded because it took literally like only five minutes to complete listening to one normal song. Gacha games will take something like 5 years to "complete", and there is no good indicator of how "completed" the game was. 
 
-### 5. Additional (AD)
+### 4. Additional (AD)
 
 Like the boredom subscore, this subscore has only one factor score with the same name. Its aim is to provide additional score that isn't emotion-related, art-related, info-related or interest-related, something like a short anime buff, compensation score, etc.
 
@@ -72,7 +66,6 @@ The combine factors for all factor scores and subscores are as follows:
 Subscores:
 * E: 0.6
 * A: 0.4
-* I: 0.5
 * B: 0.0
 * AD: 1.0
 
@@ -86,8 +79,6 @@ Factor scores:
 * AL: 0.3
 * AI: 0.3
 * AM: 0.4
-* IP: 0.7
-* IG: 0.5
 * B: 0.0
 * AD: 1.0
 
