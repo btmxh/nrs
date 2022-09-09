@@ -44,7 +44,7 @@ Art comes in 3 forms, and must not go with any emotions (there already is an emo
 
 The factor scores of this subscore are:
 * Music (AM)
-* Illustration (AI) (Visual, this will be the new name very soon)
+* Visual (AV)
 * Language (AL)
 
 The names should be self-explanatory.
@@ -77,7 +77,7 @@ Factor scores:
 * CU: 0.4
 * CP: 0.5
 * AL: 0.3
-* AI: 0.3
+* AV: 0.3
 * AM: 0.4
 * B: 0.0
 * AD: 1.0
