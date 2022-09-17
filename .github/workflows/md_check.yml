@@ -1,0 +1,15 @@
+name: Check markdown files
+
+on: [push, workflow_dispatch]
+
+jobs:
+  md-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Lint markdown files
+        uses: nosborn/github-action-markdown-cli@v3.1.0
+        with:
+          files: .
+          config_file: .markdownlint.yaml
