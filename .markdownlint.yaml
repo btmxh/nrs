@@ -188,7 +188,8 @@ MD038: true
 MD039: true
 
 # MD040/fenced-code-language - Fenced code blocks should have a language specified
-MD040: true
+# some code blocks are not actually code
+MD040: false
 
 # MD041/first-line-heading/first-line-h1 - First line in a file should be a top-level heading
 MD041:
@@ -203,9 +204,9 @@ MD042: true
 # MD043/required-headings/required-headers - Required heading structure
 MD043:
   # List of headings
-  headings: []
+  headings: ['*']
   # List of headings
-  headers: []
+  headers: ['*']
 
 # MD044/proper-names - Proper names should have the correct capitalization
 MD044:
