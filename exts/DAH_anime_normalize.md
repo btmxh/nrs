@@ -23,4 +23,4 @@ The extension provides a sample entry list, which consists of base animes. These
 
 This entry list is scored using NRS but without this extension (we don't need base anime normalized score since they don't exist), giving 10 overall scores for 10 animes. Using "keyframe-like" interpolation (for scores outside the interpolation range, the score will be capped between the MAL's 1-10 range).
 
-The entry list is not provided here, you can see it in the [nrs-impl-kt]([https://github.com/ngoduyanh/nrs-impl-kt](https://github.com/ngoduyanh/nrs-impl-kt/blob/master/core/src/main/kotlin/com/dah/nrs/exts/DAH_anime_normalize.kt)) repo. A set of serialized JSON files are going to be provided in the future.
+The entry list is not provided here, you can see it in the [nrs-impl-kt](https://github.com/ngoduyanh/nrs-impl-kt/blob/master/core/src/main/kotlin/com/dah/nrs/exts/DAH_anime_normalize.kt) repo. A set of serialized JSON files are going to be provided in the future.
