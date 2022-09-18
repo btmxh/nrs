@@ -167,7 +167,7 @@ boredom during this process (the boredom factor), is used to calculate the base 
 Using the consume length, the base consume length and the maximum base score
 can be calculated by evaluating some conditionals:
 
-* If the consume length is less than  10 minutes, then the base consume length
+* If the consume length is less than 10 minutes, then the base consume length
 and the maximum base score are 5 minutes and 0.1, respectively.
 * If the consume length is less than 2 hours, then the base consume length and
 the maximum base score are 2 hours and 0.3, respectively.
