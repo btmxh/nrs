@@ -19,7 +19,9 @@ This extension implement the entry ID mapping function from the extension `DAH_e
 
 ### ID syntax
 
-An entry ID must be a string, which is the concatenation of all ID components using the separator `-`. The list of ID components for an entry is determined as follow:
+An entry ID must be a string, which is the concatenation of all ID components
+using the separator `-`. The list of ID components for an entry is determined
+as follows:
 
 ```python
 # XYZ* means that XYZ is optional
@@ -29,7 +31,7 @@ IDComponents = [TypePrefix, DatabaseID, SubTypePrefix*, EntryIDInDatabase, Suffi
 IDComponents = [TypePrefix, CustomID]
 ```
 
-### Type Prefixes:
+### Type Prefixes
 
 * A: Anime
 
@@ -49,23 +51,28 @@ IDComponents = [TypePrefix, CustomID]
 
 Anime:
 
-- MAL: [MyAnimeList](https://myanimelist.net)
-- AL: [AniList](https://anilist.co)
-- ADB: [AniDB](https://anidb.net)
-- KS: [Kitsu](https://kitsu.io)
+* MAL: [MyAnimeList](https://myanimelist.net)
+* AL: [AniList](https://anilist.co)
+* ADB: [AniDB](https://anidb.net)
+* KS: [Kitsu](https://kitsu.io)
 
 Visual Novel:
 
-- VNDB: [vndb](https://vndb.org)
+* VNDB: [vndb](https://vndb.org)
 
 Video Game, Franchise, Music:
 
-- VGMDB: [vgmdb](https://vgmdb.net)
+* VGMDB: [vgmdb](https://vgmdb.net)
 
   VGMDB has two subtype prefixes: AL for album, AR for artists
 
 ### Notes
 
-- Visual Novels are defined as entries with a vndb entry, so there are no custom ID system for Visual Novels.
-- Music track entries will use its album ID base ID, and the track number as its suffix, so the ID of `OvertuRe:` will be "M-VGMDB-AL-89363-2" (it's in the album `DRe:AmEr (KiRaRe ver.)`, id "M-VGMDB-AL-89363").
-- For franchises with multiple games, and none of them have a separate VGMDB entries, the games will share the same database ID with the owner franchise, but using the suffix as the index of that game in the game list (start from 1).
+* Visual Novels are defined as entries with a vndb entry, so there are no custom
+ID system for Visual Novels.
+* Music track entries will use its album ID base ID, and the track number as its
+suffix, so the ID of `OvertuRe:` will be "M-VGMDB-AL-89363-2" (it's in the album
+`DRe:AmEr (KiRaRe ver.)`, id "M-VGMDB-AL-89363").
+* For franchises with multiple games, and none of them have a separate VGMDB
+entries, the games will share the same database ID with the owner franchise, but
+using the suffix as the index of that game in the game list (start from 1).
