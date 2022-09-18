@@ -42,7 +42,8 @@ There are 3 kinds of EI:
 This is given to the entry when the impact was "noticeable": you know it's
 there, but it's not strong enough to be appreciated.
 
-An EI takes in a relative score parameter, which can range from -10.0 to 10.0.
+A
+ NEI takes in a relative score parameter, which can range from -1.0 to 1.0.
 It's then interpolated to the -2.0 to 2.0 range to create the base score.
 
 #### 2.1.2. Appreciable Emotional Impact (AEI)
@@ -53,7 +54,7 @@ interpolated from the relative score parameter.
 
 Instead of a simple interpolation, this process for AEI is a little bit more complex.
 
-The relative score parameter, which also can range from -10.0 to 10.0, is split
+The relative score parameter, which also can range from -1.0 to 1.0, is split
 into two part: the sign, and the absolute value. The mapped score is the absolute
 value of the relative score, interpolated to the 2.0 to 3.0 range, with the sign
 replaced to the relative score sign. This makes AEI(0.0) and AEI(-0.0) different.
