@@ -86,7 +86,7 @@ This gives a base score of 3.5, and only applicable for AP emotion.
 #### 2.1.3.4. Exceptional Plot Impact (EPI)
 
 Unlike Cry or EHI, this takes in a plot score argument, which is in the range
-0 to 10, then interpolated into the range 3.5 to 4.5 to get the base score.
+0 to 1, then interpolated into the range 3.5 to 4.5 to get the base score.
 This is only applicable for AP emotion.
 
 ### 2.2. Visual impact
