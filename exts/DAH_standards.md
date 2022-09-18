@@ -208,7 +208,7 @@ was underrated or has been abusing the system.
 
 ### 2.8. Music impact
 
-Music impacts take in a `musicScore` parameter, which is in the range 0 to 10.
+Music impacts take in a `musicScore` parameter, which is in the range 0 to 1.
 It is then mapped to the 0-3 range to get the base score of the impact.
 
 ### 2.9. osu! song impact
@@ -218,7 +218,7 @@ For consumers who play the rhythm game
 experience, and their NRS entry will get a `osu! song impact`.
 
 This impact takes in two parameters, the personal and community factor, which
-are both in the 0-10 range. They are then mapped to the 0-0.5 and 0-0.2 range
+are both in the 0-1 range. They are then mapped to the 0-0.5 and 0-0.2 range
 respectively, and the base score is calculated by taking the sum of the mapped values.
 
 ## 3. Relations
