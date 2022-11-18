@@ -27,9 +27,14 @@ as follows:
 # XYZ* means that XYZ is optional
 # standard id
 IDComponents = [TypePrefix, DatabaseID, SubTypePrefix*, EntryIDInDatabase, Suffix*]
-# custom id (entries with no database)
-IDComponents = [TypePrefix, CustomID]
 ```
+
+Entries that is not in any listed-below database will use a custom ID scheme.
+The custom ID scheme will only have two components: the type prefix and its
+ranked timestamp. The ranked timestamp is a datetime (that usually indicates
+when the entry was added to the NRS system, but not required), formatted in
+ISO 8601 format without the symbols, for example: 20070405T143050. An optional
+suffix (similar to in standard IDs) can also be provided.
 
 ### Type Prefixes
 
