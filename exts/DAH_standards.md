@@ -73,8 +73,19 @@ This gives a base score of 4
 #### 2.1.3.2. PADS (depressed after watching/consuming an entry) (PADS)
 
 A PADS depends only on how long it lasts, the concept of "PADS strength" does
-not exist. The number of days is clamped into the 1 to 5 range, then interpolate
-to the score range of 3.0 to 5.0.
+not exist. The number of days is clamped into the 1 to 10 range, then interpolated
+using an implementation-defined function to the base score.
+
+This implementation-defined base score function must be in the form of some
+constant (called the a-value), times the PADS length (in days) raised to
+the power of another constant, called the p-value. Hence, the function
+must be in the form of `a * pow(pads_length, p)`.
+
+> Implementation note: PADS is not a replacement for AEIs like the way Cry impacts
+are, and almost all PADS should have at least one accompanying emotional impact
+(which obviously should never be another PADS), like NEI, AEI, Cry or Waifu impacts.
+This, however, is not a requirement, and PADS without any accompanying impacts is
+perfectly suitable and not at all discouraged in the system.
 
 Implementations can also enable "negative" PADS, by flipping the sign of the
 score value.
