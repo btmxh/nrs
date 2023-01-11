@@ -30,8 +30,15 @@ An EI can be the result of multiple contributing emotions, so the first paramete
 that all EI takes in is a weight list of all contributing emotions.
 
 These weights can be used to form the contributing emotion weight vector, which
-is then normalized using the "combine" metric:
+is then normalized using the "combine" norm:
 ```d = combine(v, EmotionSubscoreWeight)```, and scales up by the base score.
+
+> The normalizing process is implementation-dependent, but should be close
+> to what the standard normalizing process do. The standard normalizing process
+> is defined simply as dividing the score vector by its norm (in this case, the
+> "combine" norm). This flexibility is to give implementations the ability
+> to have different approaches to normalizing score vectors, since the standard
+> process is heavily biased towards single-emotion impacts.
 
 The base score will depend on the kind of emotion impact.
 
