@@ -33,7 +33,7 @@ This Git reposistory may be referred as "the official NRS reposistory".
 An NRS system is an entity that is capable of executing certain tasks described
 by an NRS specification. This is the specification for a *core* NRS system,
 therefore any *core* NRS system must be an NRS system. By modifying this
-document using a set of [extensions](2.2. Extensions), which each has its own
+document using a set of [extensions](#22-extensions), which each has its own
 specification in the `exts` directory of the NRS specification git repository,
 a modified NRS specification can be derived from this document, then used to
 create a new NRS system. If the modification change how the system behave,
@@ -84,10 +84,10 @@ extensions to be disabled.
 
 ### 2.3. Mathematical concepts
 
-The (score calculation process)[] depends on some basic concepts of linear
-algebra: vectors, matrices, dot product, matrix multiplication, etc. All of
-the vectors and matrices used in the process will be simple vectors and
-matrices (ordered sets of real numbers).
+The [score calculation process](#32-score-calculation) depends on some basic
+concepts of linear algebra: vectors, matrices, dot product, matrix
+multiplication, etc. All of the vectors and matrices used in the process will
+be simple vectors and matrices (ordered tuples of real numbers).
 
 Score vectors and matrices are simple vectors and matrices with a restriction:
 in a context, all score vectors must have the same number of dimensions `n`,
@@ -138,7 +138,7 @@ entries, impacts, and relations.
 #### 2.4.1. Entries
 
 An **entry** is a context entity that is scored in the
-[score calculation process](#3.2. Score calculation)
+[score calculation process](#32-score-calculation)
 
 An entry can contains other entries. For each pair of entry `A` and `B`, there
 is a number named the **direct contain weight**, that determine how much of `B`
@@ -146,7 +146,7 @@ was contained directly by `A`. This number must be in the 0 to 1 range.
 
 These values are used to determine the **contain weight** of entry pairs. The
 process is covered in the
-[contain weight solving](#3.2.2. Contain weight solving) process.
+[contain weight solving](#322-contain-weight-solving) process.
 
 #### 2.4.2. Impacts
 
