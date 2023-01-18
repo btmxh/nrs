@@ -238,13 +238,17 @@ products between the contain weight of the pair `(E, A)` and the
 **direct contributing weight** of `A` in `IR` for every `A` in the map `M`.
 
 This weight is then passed into an function, called the weight-buffing function
-to get the buffed contributing weight of `E` in `IR`.
+to get the buffed contributing weight of `E` in `IR`. The buffed weight could be
+any values, like a scalar, a vector or a matrix, and is implementation-defined.
+The only requirement for this value is the ability to be multiplied with a
+score vector, and this multiplication process should be similar to
+matrix-vector multiplication.
 
 #### 3.2.4. Impact score calculation
 
 For an impact `I` and entry `E`, the amount of score that `I` give to `E` is the
-product of the I's impact score vector and the buffed contributing weight of `E`
-in `I`.
+product of the I's buffed contributing weight of `E` in `I` and the impact score
+vector.
 
 The total impact score of an entry `E` is then calculated by performing
 `combineVectors` on the multiset of all score vectors that `I` gives to `E`,
@@ -257,8 +261,8 @@ all matrix products between every referenced entry overall score and its overall
 score.
 
 Using this base score, for every relation `R` and entry `E`, the score vector
-that `R` give to `E` is calculated by taking the product of `R`'s base score and
-the buffed contributing weight of `E` in `R`.
+that `R` give to `E` is calculated by taking the product of the buffed
+contributing weight of `E` in `R` and `R`'s base score.
 
 The total relation score of an entry `E` is then calculated by performing
 `combineVectors` on the multiset of all score vectors that `R` gives to `E`,
