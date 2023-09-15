@@ -94,9 +94,22 @@ in a context, all score vectors must have the same number of dimensions `n`,
 and all score matrices must be `n x n` square matrices. This number `n` is
 called the number of factor scores.
 
+A process called **clamping** exists for every matrices. This makes sure that
+weight matrices in the system could not exceed a certain "range" (the concept
+of ranges does not exist for general matrices, hence the process couldn't be
+clearly defined here). This process is implementation-defined, and a no-op
+implementation may be used. A common clamping algorithm is clamping every
+elements in the matrix in some numerical range, which is a well-defined for
+the real numbers. A matrix is called to be **clamped** if clamping it does not
+change its elements.
+
 Factor scores are fancy indices to access elements of a score vector. The number
 of factor scores are globally constant in a context, and every factor score can
-be used to access elements of any score vectors.
+be used to access elements of any score vectors. Similarly, a pair of factor
+scores can be used to index a matrix. One can interpret an element of a matrix,
+at factor score row `i` and column `j`, as how much `i`-factor-score that the
+result would get from the matrix-vector multiplication per `j`-factor-score in
+the multiplied vector.
 
 An unique function, called **the combine function** must be defined in every
 context. This function takes in a multiset of number and an additional number,
@@ -142,7 +155,8 @@ An **entry** is a context entity that is scored in the
 
 An entry can contains other entries. For each pair of entry `A` and `B`, there
 is a number named the **direct contain weight**, that determine how much of `B`
-was contained directly by `A`. This number must be in the 0 to 1 range.
+was contained directly by `A`. This weight being a matrix is to be able to more
+accurately and flexibly model the containing relationships between two entries.
 
 These values are used to determine the **contain weight** of entry pairs. The
 process is covered in the
@@ -154,9 +168,9 @@ An **impact** is a context entity that's used to give constant score to entries.
 
 An impact is defined using two properties:
 
-* The impact contribution map, mapping entries to a number, called the
-**direct contributing weight**. This number determines how much of the impact
-was a result of the entry. This number must be in the 0 to 1 range.
+* The impact contribution map, mapping entries to a clamped score matrix, called
+the **direct contributing weight**. This number determines how much of the impact
+was a result of the entry.
 * The impact score vector, which will be scaled to get the score added
 each contributing entry.
 
@@ -168,12 +182,12 @@ other entries.
 
 A relation is defined using two properties:
 
-* The relation referencing map, mapping entries to a score matrix, called the
-**relation score transform matrix**.
+* The relation referencing map, mapping entries to a clamped score matrix, called
+the **relation score transform matrix**.
 
-* The relation contribution map, mapping entries to a number, called the
-**direct contributing weight**. Similarly to the weight in impacts, it
-determines how much of the relation affects the entry. It must be in the 0 to 1 range.
+* The relation contribution map, mapping entries to a clamped score matrix, called
+the **direct contributing weight**. Similarly to the weight in impacts, it
+determines how much of the relation affects the entry.
 
 ## 3. Required capabilities
 
@@ -211,20 +225,22 @@ directed graph. This graph, called the **entry graph**, is constructed as follow
 * The vertex set is the set of all entries.
 * Let `A` and `B` be vertices (entries of the context). The directed edge
 `(A, B)` is an edge of the entry graph if and only if the
-**direct contain weight** of the pair `(A, B)` is greater than zero. This weight
+**direct contain weight** of the pair `(A, B)` is a non-zero matrix. This weight
 is also used as the weight for this edge.
 
 After establishing the entry graph, the **contain weight** of the pair `(A, B)`
 can be calculated as follows:
 
-* If `A` and `B` is the same entry, the result is 1.
-* Otherwise, the result is sum of the contain wights of the pairs in the form
-`(C, B)`, for every out-neighbor `C` of `A`.
+* If `A` and `B` is the same entry, the result is the identity matrix.
+* Otherwise, the result is sum of matrix-matrix products between the direct contain
+weight of `(A, C)` and the contain wights of `(C, B)` for every out-neighbor `C` of
+`A`.
 
-As long as there are no loops in the entry graph, the process will ultimately
-come to an end. The behavior of this process when there are loops is
-implementation-specific. The recommended behavior is too forbid the existence
-of loops in this graph.
+The process can be recursively calculated using tree traversing algorithms like DFS,
+BFS, etc. As long as there are no loops in the entry graph, i.e. the entry graph is
+a tree, the process can end. The behavior of this process when there are loops is
+implementation-specific, with forbiding the existence of loops in this graph being
+the recommend one.
 
 #### 3.2.3. Contributing weight solving
 
@@ -238,7 +254,9 @@ products between the contain weight of the pair `(E, A)` and the
 **direct contributing weight** of `A` in `IR` for every `A` in the map `M`.
 
 This weight is then passed into an function, called the weight-buffing function
-to get the buffed contributing weight of `E` in `IR`.
+to get the buffed contributing weight of `E` in `IR`. The buffed weight must be
+something that could be multiplied with a vector and yield another vector as a
+result, i.e. scalars, matrices, vectors (with element-wise multiplication), etc.
 
 #### 3.2.4. Impact score calculation
 
@@ -265,8 +283,8 @@ The total relation score of an entry `E` is then calculated by performing
 for every relation `R`.
 
 > Note: This algorithm may cause infinite recursion (relation score of this
-entry may depend on the overall score of another entries). If this happens, the
-behavior is implementation-defined.
+> entry may depend on the overall score of another entries). If this happens, the
+> behavior is implementation-defined.
 
 #### 3.2.5. Overall score calculation
 
